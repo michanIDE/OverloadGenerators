@@ -1,5 +1,5 @@
 package net.michanide.overloadgenerators.init;
 
-public class OverloadGeneratorsBlock {
+public class ModBlock {
     
 }
