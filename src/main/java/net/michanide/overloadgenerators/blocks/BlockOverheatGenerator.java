@@ -2,6 +2,7 @@ package net.michanide.overloadgenerators.blocks;
 
 import javax.annotation.Nullable;
 
+import net.michanide.overloadgenerators.blocks.tile.BlockEntityOverheatGenerator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -24,7 +25,7 @@ public class BlockOverheatGenerator extends Block implements EntityBlock{
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new SolarGeneratorBlockEntity(pos, state);
+        return new BlockEntityOverheatGenerator(pos, state);
     }
 
     @Override
@@ -33,7 +34,7 @@ public class BlockOverheatGenerator extends Block implements EntityBlock{
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof BlockEntityOverheatGenerator) {
                 MenuProvider containerProvider = (MenuProvider) blockEntity;
-                NetworkHooks.openScreen((ServerPlayer) player, containerProvider, pos);
+                NetworkHooks.openGui((ServerPlayer) player, containerProvider, pos);
             }
         }
         return InteractionResult.SUCCESS;

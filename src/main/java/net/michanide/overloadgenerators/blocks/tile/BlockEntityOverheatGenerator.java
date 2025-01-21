@@ -2,11 +2,15 @@ package net.michanide.overloadgenerators.blocks.tile;
 
 import javax.annotation.Nullable;
 
+import net.michanide.overloadgenerators.init.ModBlockEntity;
+import net.michanide.overloadgenerators.menu.MenuOverheatGenerator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -22,17 +26,17 @@ import net.minecraftforge.energy.IEnergyStorage;
 public class BlockEntityOverheatGenerator extends BlockEntity implements MenuProvider {
     private static final int RF_PER_TICK = 20; // 1秒間に20RFを生成
     private int energyStored = 0;
-    private final int capacity = 10000; // 最大エネルギー量
+    private final int capacity = 10000; // Max Energy Stored
     private final LazyOptional<IEnergyStorage> energyStorage = LazyOptional.of(this::createEnergyStorage);
 
     public BlockEntityOverheatGenerator(BlockPos pos, BlockState state) {
-        super(ModBlockEntity.SOLAR_GENERATOR.get(), pos, state);
+        super(ModBlockEntity.OVERHEAT_GENERATOR.get(), pos, state);
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, BlockEntityOverheatGenerator blockEntity) {
-        // クライアント側では処理しない
+        // Do not tick on client side
         if (!level.isClientSide) {
-            // 昼間かつ空が見える場合のみエネルギーを生成
+            // Generate energy only during the day and when the block can see the sky
             if (level.isDay() && level.canSeeSky(pos)) {
                 blockEntity.generateEnergy();
             }
@@ -49,7 +53,7 @@ public class BlockEntityOverheatGenerator extends BlockEntity implements MenuPro
         return new EnergyStorage(capacity, RF_PER_TICK, 0) {
             @Override
             public int receiveEnergy(int maxReceive, boolean simulate) {
-                return 0; // 発電機なので受け入れは不可
+                return 0; // Not receive energy
             }
 
             @Override
@@ -90,6 +94,11 @@ public class BlockEntityOverheatGenerator extends BlockEntity implements MenuPro
         }
         return super.getCapability(cap, side);
     }
+
+    public void drops() {
+        Containers.dropContents(level, worldPosition, (SimpleContainer) energyStorage.orElse(null));
+    }
+
 
     @Override
     public Component getDisplayName() {
