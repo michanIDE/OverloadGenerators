@@ -21,7 +21,7 @@ modId="overloadgenerators" #mandatory
 # see the associated build.gradle script for how to populate this completely automatically during a build
 version="0.0.1" #mandatory
  # A display name for the mod
-displayName="Example Mod" #mandatory
+displayName="Overload Generators" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
@@ -29,7 +29,7 @@ displayName="Example Mod" #mandatory
 # A file name (in the root of the mod JAR) containing a logo for display
 # logoFile="overloadgenerators.png" #optional
 # A text field displayed in the mod UI
-credits="Thanks for this example mod goes to Java" #optional
+credits="Coding Help: ChatGPT" #optional
 # A text field displayed in the mod UI
 authors="michanide" #optional
 # The description text for the mod (multi line!) (#mandatory)

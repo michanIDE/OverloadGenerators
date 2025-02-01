@@ -1,21 +1,22 @@
 package net.michanide.overloadgenerators;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+
+import mekanism.common.config.MekanismModConfig;
+import mekanism.generators.common.config.MekanismGeneratorsConfig;
+import net.michanide.overloadgenerators.config.OverGenConfig;
+import net.michanide.overloadgenerators.init.OverGenBlockEntity;
+import net.michanide.overloadgenerators.init.OverGenBlocks;
+import net.michanide.overloadgenerators.init.OverGenContainerTypes;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
-import java.util.stream.Collectors;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(OverloadGenerators.MOD_ID)
@@ -30,56 +31,27 @@ public class OverloadGenerators
 
     public OverloadGenerators()
     {
-        // Register the setup method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        // Register the enqueueIMC method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
-        // Register the processIMC method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        OverGenConfig.register(ModLoadingContext.get());
+        OverGenBlocks.BLOCKS.register(modEventBus);
+        OverGenBlockEntity.BLOCK_ENTITIES.register(modEventBus);
+
+        OverGenContainerTypes.CONTAINER_TYPES.register(modEventBus);
+
+        // modEventBus.addListener(this::clientSetup);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private void setup(final FMLCommonSetupEvent event)
-    {
-        // some preinit code
-        LOGGER.info("HELLO FROM PREINIT");
-        LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
-    }
-
-    private void enqueueIMC(final InterModEnqueueEvent event)
-    {
-        // Some example code to dispatch IMC to another mod
-        InterModComms.sendTo("examplemod", "helloworld", () -> { LOGGER.info("Hello world from the MDK"); return "Hello world";});
-    }
-
-    private void processIMC(final InterModProcessEvent event)
-    {
-        // Some example code to receive and process InterModComms from other mods
-        LOGGER.info("Got IMC {}", event.getIMCStream().
-                map(m->m.messageSupplier().get()).
-                collect(Collectors.toList()));
-    }
-
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event)
-    {
-        // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
-    }
-
-    // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
-    // Event bus for receiving Registry Events)
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class RegistryEvents
-    {
-        @SubscribeEvent
-        public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent)
-        {
-            // Register a new block here
-            LOGGER.info("HELLO from Register Block");
+    private void onConfigLoad(ModConfigEvent configEvent) {
+        //Note: We listen to both the initial load and the reload, to make sure that we fix any accidentally
+        // cached values from calls before the initial loading
+        ModConfig config = configEvent.getConfig();
+        //Make sure it is for the same modid as us
+        if (config.getModId().equals(MOD_ID) && config instanceof MekanismModConfig mekConfig) {
+            mekConfig.clearCache();
         }
     }
 }
