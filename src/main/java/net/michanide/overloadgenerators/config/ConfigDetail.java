@@ -19,7 +19,7 @@ public class ConfigDetail extends BaseMekanismConfig {
         builder.comment("Overload Generators Energy Storage Config. This config is synced from server to client.").push("overloadgenerators");
 
         overheatGeneratorStorage = CachedFloatingLongValue.define(this, builder, "Base energy storage.", "overheatGeneratorStorage", FloatingLong.createConst(4_000_000));
-        overheatGeneratorGeneration = CachedFloatingLongValue.define(this, builder, "Base production rate.", "overheatGeneratorGeneration", FloatingLong.createConst(1_000));
+        overheatGeneratorGeneration = CachedFloatingLongValue.define(this, builder, "Base production rate.", "overheatGeneratorGeneration", FloatingLong.createConst(400_000));
 
         builder.pop();
         configSpec = builder.build();

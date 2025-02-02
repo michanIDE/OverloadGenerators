@@ -2,6 +2,7 @@ buildscript {
     repositories {
         // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
         maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = 'https://repo1.maven.org/maven2/' }
         mavenCentral()
     }
     dependencies {
@@ -167,6 +168,8 @@ dependencies {
     
     implementation fg.deobf("mekanism:Mekanism:${mc_version}-${mekanism_version}")
     implementation fg.deobf("mekanism:MekanismGenerators:${mc_version}-${mekanism_version}")
+
+    implementation("com.github.oshi:oshi-core:6.6.6")
     
 }
 
