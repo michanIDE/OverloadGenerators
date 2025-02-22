@@ -62,7 +62,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            property 'forge.enabledGameTestNamespaces', 'overheatgenerators'
+            property 'forge.enabledGameTestNamespaces', 'overloadgenerators'
 
             mods {
                 overloadgenerators {
@@ -79,7 +79,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            property 'forge.enabledGameTestNamespaces', 'overheatgenerators'
+            property 'forge.enabledGameTestNamespaces', 'overloadgenerators'
 
             mods {
                 overloadgenerators {

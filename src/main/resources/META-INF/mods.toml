@@ -56,3 +56,15 @@ This is a joke mod. DO NOT TRY TO RUN THESE GENERATORS AT MAXIMUM RATE.
     versionRange="[1.18.2,1.19)"
     ordering="NONE"
     side="BOTH"
+[[dependencies.mekanismneutronactivator]] #optional
+    modId="mekanism"
+    mandatory=true
+    versionRange="[10.2.5,)"
+    ordering="AFTER"
+    side="BOTH"
+[[dependencies.mekanismneutronactivator]] #optional
+    modId="mekanismgenerators"
+    mandatory=true
+    versionRange="[10.2.5,)"
+    ordering="AFTER"
+    side="BOTH"

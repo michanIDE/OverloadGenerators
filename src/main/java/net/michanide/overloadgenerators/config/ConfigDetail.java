@@ -2,6 +2,7 @@ package net.michanide.overloadgenerators.config;
 
 import mekanism.api.math.FloatingLong;
 import mekanism.common.config.BaseMekanismConfig;
+import mekanism.common.config.value.CachedDoubleValue;
 import mekanism.common.config.value.CachedFloatingLongValue;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig.Type;
@@ -11,15 +12,17 @@ public class ConfigDetail extends BaseMekanismConfig {
 
     private final ForgeConfigSpec configSpec;
 
-    public final CachedFloatingLongValue overheatGeneratorStorage;
-    public final CachedFloatingLongValue overheatGeneratorGeneration;
+    public final CachedFloatingLongValue cpuUsageGeneratorStorage;
+    public final CachedFloatingLongValue cpuUsageGeneratorGeneration;
+    public final CachedDoubleValue cpuUsageGeneratorThreshold;
 
     ConfigDetail() {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
-        builder.comment("Overload Generators Energy Storage Config. This config is synced from server to client.").push("overloadgenerators");
+        builder.comment("Overload Generators Config. This config is synced from server to client.").push("overloadgenerators");
 
-        overheatGeneratorStorage = CachedFloatingLongValue.define(this, builder, "Base energy storage.", "overheatGeneratorStorage", FloatingLong.createConst(4_000_000));
-        overheatGeneratorGeneration = CachedFloatingLongValue.define(this, builder, "Base production rate.", "overheatGeneratorGeneration", FloatingLong.createConst(400_000));
+        cpuUsageGeneratorStorage = CachedFloatingLongValue.define(this, builder, "CPU Usage Generators' base energy storage.", "cpuUsageGeneratorStorage", FloatingLong.createConst(8_000_000));
+        cpuUsageGeneratorGeneration = CachedFloatingLongValue.define(this, builder, "CPU Usage Generators' base production rate.", "cpuUsageGeneratorGeneration", FloatingLong.createConst(800_000));
+        cpuUsageGeneratorThreshold = CachedDoubleValue.wrap(this, builder.comment("CPU Usage Generators' threshold. When CPU Usage ratio exceeds this value, the generator starts producing energy.").defineInRange("cpuUsageGeneratorThreshold", 0.5, 0.0, 0.99));
 
         builder.pop();
         configSpec = builder.build();

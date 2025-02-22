@@ -15,13 +15,13 @@ import mekanism.common.MekanismLang;
 import mekanism.common.inventory.container.tile.MekanismTileContainer;
 import mekanism.common.util.text.EnergyDisplay;
 import mekanism.generators.common.GeneratorsLang;
-import net.michanide.overloadgenerators.tile.BlockEntityOverheatGenerator;
+import net.michanide.overloadgenerators.tile.BlockEntityCPUUsageGenerator;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
-public class GuiOverheatGenerator<TILE extends BlockEntityOverheatGenerator> extends GuiMekanismTile<TILE, MekanismTileContainer<TILE>> {
+public class GuiCPUUsageGenerator<TILE extends BlockEntityCPUUsageGenerator> extends GuiMekanismTile<TILE, MekanismTileContainer<TILE>> {
 
-    public GuiOverheatGenerator(MekanismTileContainer<TILE> container, Inventory inv, Component title) {
+    public GuiCPUUsageGenerator(MekanismTileContainer<TILE> container, Inventory inv, Component title) {
         super(container, inv, title);
         dynamicSlots = true;
     }

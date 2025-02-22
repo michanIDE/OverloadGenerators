@@ -10,6 +10,9 @@ import mekanism.api.math.FloatingLong;
 import mekanism.api.providers.IBlockProvider;
 import mekanism.common.capabilities.holder.slot.IInventorySlotHolder;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
+import mekanism.common.integration.computer.SpecialComputerMethodWrapper.ComputerIInventorySlotWrapper;
+import mekanism.common.integration.computer.annotation.ComputerMethod;
+import mekanism.common.integration.computer.annotation.WrappingComputerMethod;
 import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.inventory.container.sync.SyncableFloatingLong;
 import mekanism.common.inventory.slot.EnergyInventorySlot;
@@ -21,19 +24,22 @@ import net.michanide.overloadgenerators.util.GlobalTickHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BlockEntityOverheatGenerator extends TileEntityGenerator {
+public class BlockEntityCPUUsageGenerator extends TileEntityGenerator {
 
     protected FloatingLong peakOutput = FloatingLong.ZERO;
+    protected Double cpuUsageThreshold = 0.0;
     private FloatingLong lastProductionAmount = FloatingLong.ZERO;
+    @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getEnergyItem")
     private EnergyInventorySlot energySlot;
 
-    public BlockEntityOverheatGenerator(BlockPos pos, BlockState state) {
-        this(OverGenBlocks.OVERHEAT_GENERATOR, pos, state, FloatingLong.create(Long.MAX_VALUE));
+    public BlockEntityCPUUsageGenerator(BlockPos pos, BlockState state) {
+        this(OverGenBlocks.CPU_USAGE_GENERATOR, pos, state, FloatingLong.create(Long.MAX_VALUE));
     }
 
-    protected BlockEntityOverheatGenerator(IBlockProvider blockProvider, BlockPos pos, BlockState state, @Nonnull FloatingLong output) {
+    protected BlockEntityCPUUsageGenerator(IBlockProvider blockProvider, BlockPos pos, BlockState state, @Nonnull FloatingLong output) {
         super(blockProvider, pos, state, output);
-        peakOutput = OverGenConfig.config.overheatGeneratorGeneration.get();
+        peakOutput = OverGenConfig.config.cpuUsageGeneratorGeneration.get();
+        cpuUsageThreshold = OverGenConfig.config.cpuUsageGeneratorThreshold.get();
     }
 
     @Nonnull
@@ -64,8 +70,8 @@ public class BlockEntityOverheatGenerator extends TileEntityGenerator {
         if (level == null) {
             return FloatingLong.ZERO;
         }
-        double scaledCpuUsage = Math.max(0.0, (getCpuUsage() - 0.5) * 2);
-        double multiplier = scaledCpuUsage * scaledCpuUsage * 2;
+        double scaledCpuUsage = Math.max(0.0, (getCpuUsage() - cpuUsageThreshold) * 2);
+        double multiplier = scaledCpuUsage * scaledCpuUsage;
         return peakOutput.multiply(multiplier);
     }
 
@@ -79,6 +85,7 @@ public class BlockEntityOverheatGenerator extends TileEntityGenerator {
         return peakOutput;
     }
 
+    @ComputerMethod(nameOverride = "getProductionRate")
     public FloatingLong getLastProductionAmount() {
         return lastProductionAmount;
     }
