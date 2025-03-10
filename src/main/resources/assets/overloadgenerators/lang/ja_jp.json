@@ -1,0 +1,8 @@
+{
+    "block.overloadgenerators.cpu_usage_generator": "CPU使用率発電機",
+    
+    "container.overloadgenerators.cpu_usage_generator": "CPU使用率発電機",
+
+    "description.overloadgenerators.cpu_usage_generator": "サーバーのCPU使用率に基づいて電力を生成する発電機です。"
+
+}

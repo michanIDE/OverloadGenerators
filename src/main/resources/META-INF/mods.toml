@@ -34,6 +34,7 @@ credits="Coding Help: ChatGPT" #optional
 authors="michanide" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
+A Mekanism addon that adds insane generators.
 This is a joke mod. DO NOT TRY TO RUN THESE GENERATORS AT MAXIMUM RATE.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.

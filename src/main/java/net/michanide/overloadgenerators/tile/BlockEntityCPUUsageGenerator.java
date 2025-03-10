@@ -2,10 +2,14 @@ package net.michanide.overloadgenerators.tile;
 
 import javax.annotation.Nonnull;
 
+import org.lwjgl.system.CallbackI.D;
+
+import java.util.function.Predicate;
 import mekanism.api.Action;
 import mekanism.api.AutomationType;
 import mekanism.api.IContentsListener;
 import mekanism.api.RelativeSide;
+import mekanism.api.annotations.NonNull;
 import mekanism.api.math.FloatingLong;
 import mekanism.api.providers.IBlockProvider;
 import mekanism.common.capabilities.holder.slot.IInventorySlotHolder;
@@ -14,23 +18,32 @@ import mekanism.common.integration.computer.SpecialComputerMethodWrapper.Compute
 import mekanism.common.integration.computer.annotation.ComputerMethod;
 import mekanism.common.integration.computer.annotation.WrappingComputerMethod;
 import mekanism.common.inventory.container.MekanismContainer;
+import mekanism.common.inventory.container.sync.SyncableDouble;
 import mekanism.common.inventory.container.sync.SyncableFloatingLong;
+import mekanism.common.inventory.slot.BasicInventorySlot;
 import mekanism.common.inventory.slot.EnergyInventorySlot;
 import mekanism.common.util.MekanismUtils;
 import mekanism.generators.common.tile.TileEntityGenerator;
 import net.michanide.overloadgenerators.config.OverGenConfig;
 import net.michanide.overloadgenerators.init.OverGenBlocks;
+import net.michanide.overloadgenerators.item.ItemCore;
 import net.michanide.overloadgenerators.util.GlobalTickHandler;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityCPUUsageGenerator extends TileEntityGenerator {
 
     protected FloatingLong peakOutput = FloatingLong.ZERO;
-    protected Double cpuUsageThreshold = 0.0;
     private FloatingLong lastProductionAmount = FloatingLong.ZERO;
+    protected Double cpuUsageThreshold = 0.0;
+    protected Double cpuUsageThresholdMultiplier = 0.0;
+    private Double CPUUsage = 0.0;
+
     @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getEnergyItem")
     private EnergyInventorySlot energySlot;
+
+    private static final Predicate<@NonNull ItemStack> coreSlotValidator = stack -> stack.getItem() instanceof ItemCore;
 
     public BlockEntityCPUUsageGenerator(BlockPos pos, BlockState state) {
         this(OverGenBlocks.CPU_USAGE_GENERATOR, pos, state, FloatingLong.create(Long.MAX_VALUE));
@@ -40,6 +53,7 @@ public class BlockEntityCPUUsageGenerator extends TileEntityGenerator {
         super(blockProvider, pos, state, output);
         peakOutput = OverGenConfig.config.cpuUsageGeneratorGeneration.get();
         cpuUsageThreshold = OverGenConfig.config.cpuUsageGeneratorThreshold.get();
+        cpuUsageThresholdMultiplier = 1.0 / (1 - cpuUsageThreshold);
     }
 
     @Nonnull
@@ -55,7 +69,12 @@ public class BlockEntityCPUUsageGenerator extends TileEntityGenerator {
         super.onUpdateServer();
 
         // System.out.println("onUpdateServer");
+        CPUUsage = GlobalTickHandler.getCachedCPUUsage();
         energySlot.drainContainer();
+        process();
+    }
+
+    private void process(){
         if (MekanismUtils.canFunction(this) && !getEnergyContainer().getNeeded().isZero()) {
             setActive(true);
             FloatingLong production = getProduction();
@@ -70,7 +89,7 @@ public class BlockEntityCPUUsageGenerator extends TileEntityGenerator {
         if (level == null) {
             return FloatingLong.ZERO;
         }
-        double scaledCpuUsage = Math.max(0.0, (getCpuUsage() - cpuUsageThreshold) * 2);
+        double scaledCpuUsage = Math.max(0.0, (getCPUUsage() - cpuUsageThreshold) * cpuUsageThresholdMultiplier);
         double multiplier = scaledCpuUsage * scaledCpuUsage;
         return peakOutput.multiply(multiplier);
     }
@@ -90,8 +109,9 @@ public class BlockEntityCPUUsageGenerator extends TileEntityGenerator {
         return lastProductionAmount;
     }
 
-    public double getCpuUsage() {
-        return GlobalTickHandler.getCachedCPUUsage();
+    @ComputerMethod
+    public double getCPUUsage() {
+        return CPUUsage;
     }
 
     @Override
@@ -99,5 +119,6 @@ public class BlockEntityCPUUsageGenerator extends TileEntityGenerator {
         super.addContainerTrackers(container);
         container.track(SyncableFloatingLong.create(this::getMaxOutput, value -> peakOutput = value));
         container.track(SyncableFloatingLong.create(this::getLastProductionAmount, value -> lastProductionAmount = value));
+        container.track(SyncableDouble.create(this::getCPUUsage, value -> CPUUsage = value));
     }
 }

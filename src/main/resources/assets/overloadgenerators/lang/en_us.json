@@ -1,0 +1,9 @@
+{
+    "block.overloadgenerators.cpu_usage_generator": "CPU Usage Generator",
+    
+    "container.overloadgenerators.cpu_usage_generator": "CPU Usage Generator",
+
+    "description.overloadgenerators.cpu_usage_generator": "A Generator that generates power based on the CPU usage of the server.",
+
+    "gui.overloadgenerators.cpu_usage_ratio": "CPU Usage: %1$s"
+}

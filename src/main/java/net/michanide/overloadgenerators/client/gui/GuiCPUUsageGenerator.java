@@ -15,7 +15,9 @@ import mekanism.common.MekanismLang;
 import mekanism.common.inventory.container.tile.MekanismTileContainer;
 import mekanism.common.util.text.EnergyDisplay;
 import mekanism.generators.common.GeneratorsLang;
+import net.michanide.overloadgenerators.OverloadGeneratorsLang;
 import net.michanide.overloadgenerators.tile.BlockEntityCPUUsageGenerator;
+import net.michanide.overloadgenerators.util.text.CPUUsageDisplay;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -29,9 +31,10 @@ public class GuiCPUUsageGenerator<TILE extends BlockEntityCPUUsageGenerator> ext
     @Override
     protected void addGuiElements() {
         super.addGuiElements();
-        addRenderableWidget(new GuiInnerScreen(this, 48, 23, 80, 40, () -> {
+        addRenderableWidget(new GuiInnerScreen(this, 48, 20, 80, 50, () -> {
             List<Component> list = new ArrayList<>();
             list.add(EnergyDisplay.of(tile.getEnergyContainer()).getTextComponent());
+            list.add(OverloadGeneratorsLang.CPU_USAGE.translate(CPUUsageDisplay.of(tile.getCPUUsage())));
             list.add(GeneratorsLang.PRODUCING_AMOUNT.translate(EnergyDisplay.of(tile.getLastProductionAmount())));
             list.add(GeneratorsLang.OUTPUT_RATE_SHORT.translate(EnergyDisplay.of(tile.getMaxOutput())));
             return list;

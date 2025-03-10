@@ -8,6 +8,7 @@ import net.michanide.overloadgenerators.config.OverGenConfig;
 import net.michanide.overloadgenerators.init.OverGenBlockEntity;
 import net.michanide.overloadgenerators.init.OverGenBlocks;
 import net.michanide.overloadgenerators.init.OverGenContainerTypes;
+import net.michanide.overloadgenerators.init.OverGenItems;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -34,6 +35,7 @@ public class OverloadGenerators
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         OverGenConfig.register(ModLoadingContext.get());
+        OverGenItems.ITEMS.register(modEventBus);
         OverGenBlocks.BLOCKS.register(modEventBus);
         OverGenBlockEntity.BLOCK_ENTITIES.register(modEventBus);
 
