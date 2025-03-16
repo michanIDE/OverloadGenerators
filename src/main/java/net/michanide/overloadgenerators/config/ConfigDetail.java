@@ -2,9 +2,9 @@ package net.michanide.overloadgenerators.config;
 
 import mekanism.api.math.FloatingLong;
 import mekanism.common.config.BaseMekanismConfig;
+import mekanism.common.config.value.CachedBooleanValue;
 import mekanism.common.config.value.CachedDoubleValue;
 import mekanism.common.config.value.CachedFloatingLongValue;
-import mekanism.common.config.value.CachedLongValue;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig.Type;
 
@@ -13,6 +13,7 @@ public class ConfigDetail extends BaseMekanismConfig {
 
     private final ForgeConfigSpec configSpec;
 
+    public final CachedBooleanValue isSafeMode;
     public final CachedFloatingLongValue cpuUsageGeneratorStorage;
     public final CachedFloatingLongValue cpuUsageGeneratorGeneration;
     public final CachedDoubleValue cpuUsageGeneratorThreshold;
@@ -20,6 +21,8 @@ public class ConfigDetail extends BaseMekanismConfig {
     ConfigDetail() {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
         builder.comment("Overload Generators Config. This config is synced from server to client.").push("overloadgenerators");
+
+        isSafeMode = CachedBooleanValue.wrap(this, builder.comment("Disables functions of generators in this mod. Turn this true if you installed too much core on a generator.").define("isSafeMode", false));
 
         cpuUsageGeneratorStorage = CachedFloatingLongValue.define(this, builder, "CPU Usage Generators' base energy storage.", "cpuUsageGeneratorStorage", FloatingLong.createConst(8_000_000));
         cpuUsageGeneratorGeneration = CachedFloatingLongValue.define(this, builder, "CPU Usage Generators' base production rate.", "cpuUsageGeneratorGeneration", FloatingLong.createConst(800_000));

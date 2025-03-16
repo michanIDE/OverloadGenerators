@@ -34,6 +34,7 @@ public class GuiCPUUsageGenerator<TILE extends BlockEntityCPUUsageGenerator> ext
         addRenderableWidget(new GuiInnerScreen(this, 48, 20, 80, 50, () -> {
             List<Component> list = new ArrayList<>();
             list.add(EnergyDisplay.of(tile.getEnergyContainer()).getTextComponent());
+            list.add(OverloadGeneratorsLang.CORES.translate(tile.getNumberOfCores()));
             list.add(OverloadGeneratorsLang.CPU_USAGE.translate(CPUUsageDisplay.of(tile.getCPUUsage())));
             list.add(GeneratorsLang.PRODUCING_AMOUNT.translate(EnergyDisplay.of(tile.getLastProductionAmount())));
             list.add(GeneratorsLang.OUTPUT_RATE_SHORT.translate(EnergyDisplay.of(tile.getMaxOutput())));
