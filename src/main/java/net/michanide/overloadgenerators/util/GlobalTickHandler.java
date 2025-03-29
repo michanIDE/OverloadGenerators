@@ -1,6 +1,7 @@
 package net.michanide.overloadgenerators.util;
 
 import net.michanide.overloadgenerators.OverloadGenerators;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -10,27 +11,48 @@ import oshi.hardware.CentralProcessor;
 @Mod.EventBusSubscriber(modid = OverloadGenerators.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class GlobalTickHandler {
     private static double cachedCPUUsage = 0;
+    private static long cachedTickTime = 0;
     private static long lastTick = -1;
-    private static int counter = 20;
+    private static int CPUUsageCounter = 20;
+    private static int tickTimeCounter = 0;
+    private static int tickTimeCounterMax = 100;
     private static long[] prevTicks = null;
-    private static boolean isActive = false;
+    private static boolean isCPUUsageActive = true;
+    private static boolean isTickTimeActive = true;
 
     @SubscribeEvent
     public static void onWorldTick(TickEvent.WorldTickEvent event) {
-        if (isActive && event.phase == TickEvent.Phase.END && !event.world.isClientSide) {
-            long currentTick = event.world.getGameTime();
-            if (currentTick != lastTick) {
+        long currentTick = event.world.getGameTime();
+        if (currentTick != lastTick && event.phase == TickEvent.Phase.END && !event.world.isClientSide) {
+            if (isCPUUsageActive) {
                 lastTick = currentTick;
-                if(counter > 19){
-                    counter = 0;
+                if(CPUUsageCounter > 19){
+                    CPUUsageCounter = 0;
                     cachedCPUUsage = getCPUUsage();
                     // System.out.println("CPU Usage: " + cachedCPUUsage);
-                    isActive = false;
+                    isCPUUsageActive = false;
                 } else {
-                    counter++;
+                    CPUUsageCounter++;
                 }
             }
+            if (isTickTimeActive) {
+                MinecraftServer server = event.world.getServer();
+                if (server != null) {
+                    long[] tickTimes = server.tickTimes;
+                    tickTimeCounterMax = tickTimes.length;
+                    cachedTickTime = tickTimes[tickTimeCounter]; // Last tick time in ns
+                    System.out.println("Last tick time: " + cachedTickTime + " ns(" + tickTimeCounterMax + ")");
+                }
+                if(cachedTickTime > 0){
+                    isTickTimeActive = false;
+                }
+            }
+            tickTimeCounter++;
+            if (tickTimeCounter >= tickTimeCounterMax) {
+                tickTimeCounter = 0;
+            }
         }
+        
     }
 
     private static double getCPUUsage() {
@@ -53,7 +75,12 @@ public class GlobalTickHandler {
     }
 
     public static double getCachedCPUUsage() {
-        isActive = true;
+        isCPUUsageActive = true;
         return cachedCPUUsage;
+    }
+
+    public static long getCachedTickTime() {
+        isTickTimeActive = true;
+        return cachedTickTime;
     }
 }

@@ -21,6 +21,7 @@ import mekanism.common.tile.base.TileEntityMekanism;
 import mekanism.common.util.CableUtils;
 import mekanism.common.util.MekanismUtils;
 import net.michanide.overloadgenerators.capability.OverGenEnergyContainer;
+import net.michanide.overloadgenerators.config.OverGenConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,6 +33,7 @@ public class BlockEntityOverGen extends TileEntityMekanism {
      */
     public FloatingLong output;
     private OverGenEnergyContainer energyContainer;
+    protected boolean isSafeMode = false;
 
     /**
      * Generator -- a block that produces energy. It has a certain amount of fuel it can store as well as an output rate.
@@ -39,6 +41,7 @@ public class BlockEntityOverGen extends TileEntityMekanism {
     public BlockEntityOverGen(IBlockProvider blockProvider, BlockPos pos, BlockState state, @Nonnull FloatingLong out) {
         super(blockProvider, pos, state);
         output = out;
+        isSafeMode = OverGenConfig.config.isSafeMode.get();
         addCapabilityResolver(BasicCapabilityResolver.constant(Capabilities.CONFIG_CARD_CAPABILITY, this));
     }
 

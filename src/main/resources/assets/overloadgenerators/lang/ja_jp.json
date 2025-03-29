@@ -3,6 +3,9 @@
     
     "container.overloadgenerators.cpu_usage_generator": "CPU使用率発電機",
 
-    "description.overloadgenerators.cpu_usage_generator": "サーバーのCPU使用率に基づいて電力を生成する発電機です。"
+    "description.overloadgenerators.cpu_usage_generator": "サーバーのCPU使用率に基づいて電力を生成する発電機です。",
+
+    "gui.overloadgenerators.cpu_usage_ratio": "CPU使用率: %1$s",
+    "gui.overloadgenerators.cores": "コア数: %1$s"
 
 }

@@ -30,17 +30,18 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BlockEntityCPUUsageGenerator extends BlockEntityOverGen {
+public class BlockEntityTickTimeGenerator extends BlockEntityOverGen {
 
-    protected FloatingLong peakGeneration = FloatingLong.ZERO;
+    protected FloatingLong baseGeneration = FloatingLong.ZERO;
     private FloatingLong lastProductionAmount = FloatingLong.ZERO;
     private FloatingLong baseEnergyStorage = FloatingLong.ZERO;
-    protected Double cpuUsageThreshold = 0.0;
-    protected Double cpuUsageThresholdMultiplier = 0.0;
-    private Double CPUUsage = 0.0;
+    protected Double tickTimeThresholdMultiplier = 0.0;
+    protected Long tickTimeThreshold = 0L;
+    private Long tickTime = 0L;
     private int numberOfCores = 0;
     private int numberOfCoresLastTick = 0;
     private Long processTimes = 1L;
+    private boolean isSafeMode = false;
 
     @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getCoreItem")
     private BasicInventorySlot coreSlot;
@@ -49,16 +50,16 @@ public class BlockEntityCPUUsageGenerator extends BlockEntityOverGen {
 
     private static final Predicate<@NonNull ItemStack> coreSlotValidator = stack -> stack.getItem() instanceof ItemCore;
 
-    public BlockEntityCPUUsageGenerator(BlockPos pos, BlockState state) {
-        this(OverGenBlocks.CPU_USAGE_GENERATOR, pos, state, OverGenConfig.config.cpuUsageGeneratorGeneration.get().multiply(2));
+    public BlockEntityTickTimeGenerator(BlockPos pos, BlockState state) {
+        this(OverGenBlocks.CPU_USAGE_GENERATOR, pos, state, OverGenConfig.config.tickTimeGeneratorGeneration.get().multiply(2));
     }
 
-    protected BlockEntityCPUUsageGenerator(IBlockProvider blockProvider, BlockPos pos, BlockState state, @Nonnull FloatingLong output) {
+    protected BlockEntityTickTimeGenerator(IBlockProvider blockProvider, BlockPos pos, BlockState state, @Nonnull FloatingLong output) {
         super(blockProvider, pos, state, output);
-        peakGeneration = OverGenConfig.config.cpuUsageGeneratorGeneration.get();
-        cpuUsageThreshold = OverGenConfig.config.cpuUsageGeneratorThreshold.get();
-        baseEnergyStorage = OverGenConfig.config.cpuUsageGeneratorStorage.get();
-        cpuUsageThresholdMultiplier = 1.0 / (1 - cpuUsageThreshold);
+        baseGeneration = OverGenConfig.config.tickTimeGeneratorGeneration.get();
+        tickTimeThreshold = OverGenConfig.config.tickTimeGeneratorThreshold.get();
+        baseEnergyStorage = OverGenConfig.config.tickTimeGeneratorStorage.get();
+        isSafeMode = OverGenConfig.config.isSafeMode.get();
     }
 
     @Nonnull
@@ -73,9 +74,9 @@ public class BlockEntityCPUUsageGenerator extends BlockEntityOverGen {
     @Override
     protected void onUpdateServer() {
         super.onUpdateServer();
-
+        System.out.println("Tick");
         // System.out.println("onUpdateServer");
-        CPUUsage = GlobalTickHandler.getCachedCPUUsage();
+        tickTime = GlobalTickHandler.getCachedTickTime();
         energySlot.drainContainer();
         numberOfCoresLastTick = numberOfCores;
         numberOfCores = coreSlot.getCount();
@@ -105,7 +106,7 @@ public class BlockEntityCPUUsageGenerator extends BlockEntityOverGen {
         Long multiplier = OverGenMath.pow(2L, numberOfCores * 1L);
         FloatingLong maxEnergyStorage = baseEnergyStorage.multiply(multiplier);
         getEnergyContainer().setMaxEnergy(maxEnergyStorage);
-        setMaxOutput(peakGeneration.multiply(multiplier * 2));
+        setMaxOutput(baseGeneration.multiply(multiplier * 2));
         processTimes = multiplier;
     }
 
@@ -113,9 +114,7 @@ public class BlockEntityCPUUsageGenerator extends BlockEntityOverGen {
         if (level == null) {
             return FloatingLong.ZERO;
         }
-        double scaledCpuUsage = Math.max(0.0, (getCPUUsage() - cpuUsageThreshold) * cpuUsageThresholdMultiplier);
-        double multiplier = scaledCpuUsage * scaledCpuUsage;
-        return peakGeneration.multiply(multiplier);
+        return FloatingLong.create(10L).multiply(tickTime);
     }
 
     @Override
@@ -129,11 +128,6 @@ public class BlockEntityCPUUsageGenerator extends BlockEntityOverGen {
     }
 
     @ComputerMethod
-    public double getCPUUsage() {
-        return CPUUsage;
-    }
-
-    @ComputerMethod
     public int getNumberOfCores() {
         return numberOfCores;
     }
@@ -143,7 +137,6 @@ public class BlockEntityCPUUsageGenerator extends BlockEntityOverGen {
         super.addContainerTrackers(container);
         container.track(SyncableFloatingLong.create(this::getMaxOutput, this::setMaxOutput));
         container.track(SyncableFloatingLong.create(this::getLastProductionAmount, value -> lastProductionAmount = value));
-        container.track(SyncableDouble.create(this::getCPUUsage, value -> CPUUsage = value));
         container.track(SyncableInt.create(this::getNumberOfCores, value -> numberOfCores = value));
     }
 }

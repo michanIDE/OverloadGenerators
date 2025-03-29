@@ -8,7 +8,8 @@ public enum OverloadGeneratorsLang implements ILangEntry {
     CPU_USAGE("gui", "cpu_usage_ratio"),
     CORES("gui", "cores"),
 
-    CPU_USAGE_GENERATOR_DESCRIPTION("description", "cpu_usage_generator");
+    CPU_USAGE_GENERATOR_DESCRIPTION("description", "cpu_usage_generator"),
+    TICK_TIME_GENERATOR_DESCRIPTION("description", "tick_time_generator");
 
     private final String key;
 
