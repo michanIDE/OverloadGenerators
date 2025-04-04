@@ -41,7 +41,6 @@ public class BlockEntityTickTimeGenerator extends BlockEntityOverGen {
     private int numberOfCores = 0;
     private int numberOfCoresLastTick = 0;
     private Long processTimes = 1L;
-    private boolean isSafeMode = false;
 
     @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getCoreItem")
     private BasicInventorySlot coreSlot;
@@ -59,7 +58,6 @@ public class BlockEntityTickTimeGenerator extends BlockEntityOverGen {
         baseGeneration = OverGenConfig.config.tickTimeGeneratorGeneration.get();
         tickTimeThreshold = OverGenConfig.config.tickTimeGeneratorThreshold.get();
         baseEnergyStorage = OverGenConfig.config.tickTimeGeneratorStorage.get();
-        isSafeMode = OverGenConfig.config.isSafeMode.get();
     }
 
     @Nonnull
