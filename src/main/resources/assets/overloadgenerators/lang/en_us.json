@@ -1,11 +1,15 @@
 {
     "block.overloadgenerators.cpu_usage_generator": "CPU Usage Generator",
+    "block.overloadgenerators.tick_time_generator": "Tick Time Generator",
     
     "container.overloadgenerators.cpu_usage_generator": "CPU Usage Generator",
+    "container.overloadgenerators.tick_time_generator": "Tick Time Generator",
 
-    "description.overloadgenerators.cpu_usage_generator": "A Generator that generates power based on the CPU usage of the server.",
+    "description.overloadgenerators.cpu_usage_generator": "Generates energy from CPU usage. Because thermal throttling is just free resistance.",
+    "description.overloadgenerators.tick_time_generator": "More lag, more power. Converts tick duration into energy.",
 
     "gui.overloadgenerators.cpu_usage_ratio": "CPU Usage: %1$s",
-    "gui.overloadgenerators.cores": "Cores: %1$s"
+    "gui.overloadgenerators.cores": "Cores: %1$s",
+    "gui.overloadgenerators.tick_time": "Tick Time: %1$s ms"
     
 }

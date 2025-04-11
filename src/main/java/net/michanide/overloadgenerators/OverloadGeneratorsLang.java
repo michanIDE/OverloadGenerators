@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 public enum OverloadGeneratorsLang implements ILangEntry {
     CPU_USAGE("gui", "cpu_usage_ratio"),
     CORES("gui", "cores"),
+    TICK_TIME("gui", "tick_time"),
 
     CPU_USAGE_GENERATOR_DESCRIPTION("description", "cpu_usage_generator"),
     TICK_TIME_GENERATOR_DESCRIPTION("description", "tick_time_generator");

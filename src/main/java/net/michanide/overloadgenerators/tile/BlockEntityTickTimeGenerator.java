@@ -15,9 +15,9 @@ import mekanism.common.integration.computer.SpecialComputerMethodWrapper.Compute
 import mekanism.common.integration.computer.annotation.ComputerMethod;
 import mekanism.common.integration.computer.annotation.WrappingComputerMethod;
 import mekanism.common.inventory.container.MekanismContainer;
-import mekanism.common.inventory.container.sync.SyncableDouble;
 import mekanism.common.inventory.container.sync.SyncableFloatingLong;
 import mekanism.common.inventory.container.sync.SyncableInt;
+import mekanism.common.inventory.container.sync.SyncableLong;
 import mekanism.common.inventory.slot.BasicInventorySlot;
 import mekanism.common.inventory.slot.EnergyInventorySlot;
 import mekanism.common.util.MekanismUtils;
@@ -50,7 +50,7 @@ public class BlockEntityTickTimeGenerator extends BlockEntityOverGen {
     private static final Predicate<@NonNull ItemStack> coreSlotValidator = stack -> stack.getItem() instanceof ItemCore;
 
     public BlockEntityTickTimeGenerator(BlockPos pos, BlockState state) {
-        this(OverGenBlocks.CPU_USAGE_GENERATOR, pos, state, OverGenConfig.config.tickTimeGeneratorGeneration.get().multiply(2));
+        this(OverGenBlocks.TICK_TIME_GENERATOR, pos, state, OverGenConfig.config.tickTimeGeneratorGeneration.get().multiply(2));
     }
 
     protected BlockEntityTickTimeGenerator(IBlockProvider blockProvider, BlockPos pos, BlockState state, @Nonnull FloatingLong output) {
@@ -72,8 +72,6 @@ public class BlockEntityTickTimeGenerator extends BlockEntityOverGen {
     @Override
     protected void onUpdateServer() {
         super.onUpdateServer();
-        System.out.println("Tick");
-        // System.out.println("onUpdateServer");
         tickTime = GlobalTickHandler.getCachedTickTime();
         energySlot.drainContainer();
         numberOfCoresLastTick = numberOfCores;
@@ -130,11 +128,17 @@ public class BlockEntityTickTimeGenerator extends BlockEntityOverGen {
         return numberOfCores;
     }
 
+    @ComputerMethod
+    public Long getTickTime() {
+        return tickTime;
+    }
+
     @Override
     public void addContainerTrackers(MekanismContainer container) {
         super.addContainerTrackers(container);
         container.track(SyncableFloatingLong.create(this::getMaxOutput, this::setMaxOutput));
         container.track(SyncableFloatingLong.create(this::getLastProductionAmount, value -> lastProductionAmount = value));
+        container.track(SyncableLong.create(this::getTickTime, value -> tickTime = value));
         container.track(SyncableInt.create(this::getNumberOfCores, value -> numberOfCores = value));
     }
 }

@@ -41,7 +41,6 @@ public class GlobalTickHandler {
                     long[] tickTimes = server.tickTimes;
                     tickTimeCounterMax = tickTimes.length;
                     cachedTickTime = tickTimes[tickTimeCounter]; // Last tick time in ns
-                    System.out.println("Last tick time: " + cachedTickTime + " ns(" + tickTimeCounterMax + ")");
                 }
                 if(cachedTickTime > 0){
                     isTickTimeActive = false;
