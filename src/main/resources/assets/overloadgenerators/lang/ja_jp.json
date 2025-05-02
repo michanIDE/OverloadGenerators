@@ -10,6 +10,8 @@
 
     "gui.overloadgenerators.cpu_usage_ratio": "CPU使用率: %1$s",
     "gui.overloadgenerators.cores": "コア数: %1$s",
-    "gui.overloadgenerators.tick_time": "ティック時間: %1$s ms"
+    "gui.overloadgenerators.tick_time": "ティック時間: %1$s ms",
+
+    "item.overloadgenerators.core": "コア"
 
 }

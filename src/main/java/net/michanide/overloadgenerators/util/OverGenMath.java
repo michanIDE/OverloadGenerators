@@ -22,4 +22,15 @@ public class OverGenMath {
         }
         return result;
     }
+
+    public static Double pow(Double base, Long exp) {
+        if (exp == 0) {
+            return 1.0;
+        }
+        Double result = base;
+        for (Long i = 1L; i < exp; i++) {
+            result *= base;
+        }
+        return result;
+    }
 }

@@ -1,0 +1,7 @@
+{
+    "variants": {
+      "": {
+        "model": "overloadgenerators:block/tick_time_generator"
+      }
+    }
+  }

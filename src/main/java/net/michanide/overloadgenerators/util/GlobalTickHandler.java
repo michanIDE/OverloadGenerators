@@ -29,7 +29,6 @@ public class GlobalTickHandler {
                 if(CPUUsageCounter > 19){
                     CPUUsageCounter = 0;
                     cachedCPUUsage = getCPUUsage();
-                    // System.out.println("CPU Usage: " + cachedCPUUsage);
                     isCPUUsageActive = false;
                 } else {
                     CPUUsageCounter++;
@@ -39,7 +38,6 @@ public class GlobalTickHandler {
                 MinecraftServer server = event.world.getServer();
                 if (server != null) {
                     long[] tickTimes = server.tickTimes;
-                    tickTimeCounterMax = tickTimes.length;
                     cachedTickTime = tickTimes[tickTimeCounter]; // Last tick time in ns
                 }
                 if(cachedTickTime > 0){

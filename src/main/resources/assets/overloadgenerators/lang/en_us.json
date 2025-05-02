@@ -10,6 +10,8 @@
 
     "gui.overloadgenerators.cpu_usage_ratio": "CPU Usage: %1$s",
     "gui.overloadgenerators.cores": "Cores: %1$s",
-    "gui.overloadgenerators.tick_time": "Tick Time: %1$s ms"
+    "gui.overloadgenerators.tick_time": "Tick Time: %1$s ms",
+
+    "item.overloadgenerators.core": "Core"
     
 }

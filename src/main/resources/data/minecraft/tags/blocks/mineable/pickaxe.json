@@ -1,0 +1,6 @@
+{
+    "values": [
+        "overloadgenerators:tick_time_generator",
+        "overloadgenerators:cpu_usage_generator"
+    ]
+}

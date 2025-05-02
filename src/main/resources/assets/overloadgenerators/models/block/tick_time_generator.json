@@ -1,0 +1,6 @@
+{
+    "parent": "mekanism:block/basic_cube",
+    "textures": {
+      "all": "overloadgenerators:block/tick_time_generator"
+    }
+  }
