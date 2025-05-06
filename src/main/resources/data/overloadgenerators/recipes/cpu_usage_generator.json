@@ -1,0 +1,28 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "result": {
+      "item": "overloadgenerators:cpu_usage_generator"
+    },
+    "pattern": [
+      "ACA",
+      "EHE",
+      "ASA"
+    ],
+    "key": {
+        "A": {
+            "tag": "mekanism:alloys/reinforced"
+        },
+        "C": {
+            "item": "overloadgenerators:core"
+        },
+        "E": {
+            "tag": "forge:circuits/elite"
+        },
+        "H": {
+            "item": "mekanismgenerators:heat_generator"
+        },
+        "S": {
+            "item": "mekanism:steel_casing"
+        }
+    }
+}

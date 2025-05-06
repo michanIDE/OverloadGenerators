@@ -1,0 +1,28 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "result": {
+      "item": "overloadgenerators:optical_lattice_clock"
+    },
+    "pattern": [
+      "LPL",
+      "URU",
+      "LSL"
+    ],
+    "key": {
+        "L": {
+            "item": "mekanism:laser"
+        },
+        "P": {
+            "item": "minecraft:piston"
+        },
+        "R": {
+            "item": "minecraft:redstone"
+        },
+        "U": {
+            "tag": "forge:circuits/ultimate"
+        },
+        "S": {
+            "item": "mekanism:steel_casing"
+        }
+    }
+}

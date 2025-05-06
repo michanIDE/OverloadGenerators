@@ -31,7 +31,7 @@ public class GuiCPUUsageGenerator<TILE extends BlockEntityCPUUsageGenerator> ext
     @Override
     protected void addGuiElements() {
         super.addGuiElements();
-        addRenderableWidget(new GuiInnerScreen(this, 48, 17, 80, 55, () -> {
+        addRenderableWidget(new GuiInnerScreen(this, 43, 17, 90, 55, () -> {
             List<Component> list = new ArrayList<>();
             list.add(EnergyDisplay.of(tile.getEnergyContainer()).getTextComponent());
             list.add(OverloadGeneratorsLang.CPU_USAGE.translate(CPUUsageDisplay.of(tile.getCPUUsage())));

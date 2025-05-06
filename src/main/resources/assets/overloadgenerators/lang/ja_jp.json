@@ -1,16 +1,18 @@
 {
     "block.overloadgenerators.cpu_usage_generator": "CPU使用率発電機",
     "block.overloadgenerators.tick_time_generator": "ティック時間発電機",
+    "block.overloadgenerators.optical_lattice_clock": "光格子時計",
     
     "container.overloadgenerators.cpu_usage_generator": "CPU使用率発電機",
     "container.overloadgenerators.tick_time_generator": "ティック時間発電機",
 
     "description.overloadgenerators.cpu_usage_generator": "CPU使用率に基づいて電力を生成する発電機です。(サーバーは食べ物と言いますし…)",
     "description.overloadgenerators.tick_time_generator": "ティック処理時間を電力に変換します。ラグは燃料です。",
+    "description.overloadgenerators.optical_lattice_clock": "微弱な時間の流れ方の変化も検出できる、非常に精密な時計です。",
 
     "gui.overloadgenerators.cpu_usage_ratio": "CPU使用率: %1$s",
     "gui.overloadgenerators.cores": "コア数: %1$s",
-    "gui.overloadgenerators.tick_time": "ティック時間: %1$s ms",
+    "gui.overloadgenerators.tick_time": "ティック時間: %1$s",
 
     "item.overloadgenerators.core": "コア"
 

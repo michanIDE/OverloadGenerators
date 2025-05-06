@@ -1,6 +1,7 @@
 {
     "values": [
         "overloadgenerators:tick_time_generator",
-        "overloadgenerators:cpu_usage_generator"
+        "overloadgenerators:cpu_usage_generator",
+        "overloadgenerators:optical_lattice_clock"
     ]
 }

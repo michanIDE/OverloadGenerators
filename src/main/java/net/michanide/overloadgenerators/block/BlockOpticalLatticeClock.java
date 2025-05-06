@@ -2,7 +2,7 @@ package net.michanide.overloadgenerators.block;
 
 import javax.annotation.Nonnull;
 
-import mekanism.common.block.prefab.BlockTile.BlockTileModel;
+import mekanism.common.block.prefab.BlockTile;
 import mekanism.common.content.blocktype.BlockTypeTile;
 import mekanism.common.util.WorldUtils;
 import net.michanide.overloadgenerators.OverloadGeneratorsLang;
@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.network.chat.Component;
 
-public class BlockOpticalLatticeClock extends BlockTileModel<BlockEntityOpticalLatticeClock, BlockTypeTile<BlockEntityOpticalLatticeClock>> {
+public class BlockOpticalLatticeClock extends BlockTile<BlockEntityOpticalLatticeClock, BlockTypeTile<BlockEntityOpticalLatticeClock>> {
 
     public BlockOpticalLatticeClock() {
         super(OverGenBlockTypes.OPTICAL_LATTICE_CLOCK);
@@ -29,6 +29,7 @@ public class BlockOpticalLatticeClock extends BlockTileModel<BlockEntityOpticalL
     @Deprecated
     public InteractionResult use(@Nonnull BlockState state, @Nonnull Level world, @Nonnull BlockPos pos, @Nonnull Player player, @Nonnull InteractionHand hand,
           @Nonnull BlockHitResult hit) {
+            super.use(state, world, pos, player, hand, hit);
         if (player.isShiftKeyDown()) {
             return InteractionResult.PASS;
         }
@@ -37,7 +38,7 @@ public class BlockOpticalLatticeClock extends BlockTileModel<BlockEntityOpticalL
             return InteractionResult.PASS;
         } else if (!world.isClientSide()) {
             Long tickTime = tile.getTickTime();
-            Component text = OverloadGeneratorsLang.TICK_TIME_NS.translate(tile.getTickTime());
+            Component text = OverloadGeneratorsLang.TICK_TIME.translate(OverloadGeneratorsLang.GENERIC_NANOSECONDS.translate(tickTime));
             
             player.sendMessage(text, Util.NIL_UUID);
         }

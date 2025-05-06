@@ -1,16 +1,21 @@
 {
     "block.overloadgenerators.cpu_usage_generator": "CPU Usage Generator",
     "block.overloadgenerators.tick_time_generator": "Tick Time Generator",
+    "block.overloadgenerators.optical_lattice_clock": "Optical Lattice Clock",
     
     "container.overloadgenerators.cpu_usage_generator": "CPU Usage Generator",
     "container.overloadgenerators.tick_time_generator": "Tick Time Generator",
 
     "description.overloadgenerators.cpu_usage_generator": "Generates energy from CPU usage. Because thermal throttling is just free resistance.",
     "description.overloadgenerators.tick_time_generator": "More lag, more power. Converts tick duration into energy.",
+    "description.overloadgenerators.optical_lattice_clock": "An extremely precise clock capable of detecting even the slightest variations in the flow of time.",
 
     "gui.overloadgenerators.cpu_usage_ratio": "CPU Usage: %1$s",
     "gui.overloadgenerators.cores": "Cores: %1$s",
-    "gui.overloadgenerators.tick_time": "Tick Time: %1$s ms",
+    "gui.overloadgenerators.tick_time": "Tick Time: %1$s",
+    "gui.overloadgenerators.generic_milliseconds": "%1$s ms",
+    "gui.overloadgenerators.generic_nanoseconds": "%1$s ns",
+
 
     "item.overloadgenerators.core": "Core"
     

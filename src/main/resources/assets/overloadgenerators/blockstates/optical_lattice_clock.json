@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "overloadgenerators:block/optical_lattice_clock"
+    },
+    "facing=south": {
+      "model": "overloadgenerators:block/optical_lattice_clock",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "overloadgenerators:block/optical_lattice_clock",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "overloadgenerators:block/optical_lattice_clock",
+      "y": -90
+    }
+  }
+}

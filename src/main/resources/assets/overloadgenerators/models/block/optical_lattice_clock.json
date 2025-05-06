@@ -1,0 +1,11 @@
+{
+    "parent": "mekanism:block/machine",
+    "textures": {
+      "north": "overloadgenerators:block/optical_lattice_clock_front",
+      "south": "overloadgenerators:block/optical_lattice_clock_back",
+      "east": "overloadgenerators:block/optical_lattice_clock",
+      "west": "overloadgenerators:block/optical_lattice_clock",
+      "up": "overloadgenerators:block/optical_lattice_clock",
+      "down": "overloadgenerators:block/optical_lattice_clock"
+    }
+  }

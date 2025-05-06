@@ -1,0 +1,28 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "result": {
+      "item": "overloadgenerators:tick_time_generator"
+    },
+    "pattern": [
+      "OCO",
+      "LTL",
+      "LAL"
+    ],
+    "key": {
+        "A": {
+            "item": "mekanism:laser_amplifier"
+        },
+        "C": {
+            "item": "overloadgenerators:core"
+        },
+        "L": {
+            "item": "mekanism:laser"
+        },
+        "O": {
+            "item": "overloadgenerators:optical_lattice_clock"
+        },
+        "T": {
+            "item": "mekanism:teleportation_core"
+        }
+    }
+}

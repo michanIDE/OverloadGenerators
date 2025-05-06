@@ -17,6 +17,7 @@ import mekanism.common.util.text.EnergyDisplay;
 import mekanism.generators.common.GeneratorsLang;
 import net.michanide.overloadgenerators.OverloadGeneratorsLang;
 import net.michanide.overloadgenerators.tile.BlockEntityTickTimeGenerator;
+import net.michanide.overloadgenerators.util.text.TickTimeDisplay;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -30,10 +31,10 @@ public class GuiTickTimeGenerator<TILE extends BlockEntityTickTimeGenerator> ext
     @Override
     protected void addGuiElements() {
         super.addGuiElements();
-        addRenderableWidget(new GuiInnerScreen(this, 48, 17, 80, 55, () -> {
+        addRenderableWidget(new GuiInnerScreen(this, 43, 17, 90, 55, () -> {
             List<Component> list = new ArrayList<>();
             list.add(EnergyDisplay.of(tile.getEnergyContainer()).getTextComponent());
-            list.add(OverloadGeneratorsLang.TICK_TIME.translate(tile.getTickTime() / 1_000_000));
+            list.add(OverloadGeneratorsLang.TICK_TIME.translate(TickTimeDisplay.of(tile.getTickTime())));
             list.add(OverloadGeneratorsLang.CORES.translate(tile.getNumberOfCores()));
             list.add(GeneratorsLang.PRODUCING_AMOUNT.translate(EnergyDisplay.of(tile.getLastProductionAmount())));
             list.add(GeneratorsLang.OUTPUT_RATE_SHORT.translate(EnergyDisplay.of(tile.getMaxOutput())));

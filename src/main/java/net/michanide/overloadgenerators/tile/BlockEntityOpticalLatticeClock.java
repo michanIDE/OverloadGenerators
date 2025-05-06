@@ -2,8 +2,6 @@ package net.michanide.overloadgenerators.tile;
 
 import mekanism.common.integration.computer.annotation.ComputerMethod;
 import mekanism.common.inventory.container.MekanismContainer;
-import mekanism.common.inventory.container.sync.SyncableFloatingLong;
-import mekanism.common.inventory.container.sync.SyncableInt;
 import mekanism.common.inventory.container.sync.SyncableLong;
 import mekanism.common.tile.base.TileEntityMekanism;
 import net.michanide.overloadgenerators.init.OverGenBlocks;
