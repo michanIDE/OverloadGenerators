@@ -1,9 +1,9 @@
 package net.michanide.overloadgenerators.util;
 
-import java.util.List;
+// import java.util.List;
 
-import org.checkerframework.checker.units.qual.s;
-import org.lwjgl.system.CallbackI.S;
+// import org.checkerframework.checker.units.qual.s;
+// import org.lwjgl.system.CallbackI.S;
 
 import net.michanide.overloadgenerators.OverloadGenerators;
 import net.minecraft.server.MinecraftServer;
@@ -12,7 +12,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
-import oshi.hardware.PowerSource;
+// import oshi.hardware.PowerSource;
 
 @Mod.EventBusSubscriber(modid = OverloadGenerators.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class GlobalTickHandler {
