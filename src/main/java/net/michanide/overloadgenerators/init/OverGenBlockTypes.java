@@ -11,6 +11,7 @@ import net.michanide.overloadgenerators.config.OverGenConfig;
 import net.michanide.overloadgenerators.tile.BlockEntityCPUUsageGenerator;
 import net.michanide.overloadgenerators.tile.BlockEntityOpticalLatticeClock;
 import net.michanide.overloadgenerators.tile.BlockEntityTickTimeGenerator;
+
 public class OverGenBlockTypes {
 
     private OverGenBlockTypes() {

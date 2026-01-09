@@ -35,11 +35,11 @@ public class GuiTickTimeGenerator extends GuiMekanismTile<BlockEntityTickTimeGen
             list.add(EnergyDisplay.of(tile.getEnergyContainer()).getTextComponent());
             list.add(OverloadGeneratorsLang.TICK_TIME.translate(TickTimeDisplay.of(tile.getTickTime())));
             list.add(OverloadGeneratorsLang.CORES.translate(tile.getNumberOfCores()));
-            list.add(GeneratorsLang.PRODUCING_AMOUNT.translate(EnergyDisplay.of(tile.getLastProductionAmount())));
+            list.add(GeneratorsLang.PRODUCING_AMOUNT.translate(EnergyDisplay.of(tile.getProductionRate())));
             list.add(GeneratorsLang.OUTPUT_RATE_SHORT.translate(EnergyDisplay.of(tile.getMaxOutput())));
             return list;
         }));
-        addRenderableWidget(new GuiEnergyTab(this, () -> List.of(GeneratorsLang.PRODUCING_AMOUNT.translate(EnergyDisplay.of(tile.getLastProductionAmount())),
+        addRenderableWidget(new GuiEnergyTab(this, () -> List.of(GeneratorsLang.PRODUCING_AMOUNT.translate(EnergyDisplay.of(tile.getProductionRate())),
               MekanismLang.MAX_OUTPUT.translate(EnergyDisplay.of(tile.getMaxOutput())))));
         addRenderableWidget(new GuiVerticalPowerBar(this, tile.getEnergyContainer(), 164, 15));
     }

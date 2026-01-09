@@ -1,9 +1,12 @@
 package net.michanide.overloadgenerators;
 
+import mekanism.api.annotations.NothingNullByDefault;
+
 import mekanism.api.text.ILangEntry;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 
+@NothingNullByDefault
 public enum OverloadGeneratorsLang implements ILangEntry {
     CPU_USAGE("gui", "cpu_usage_ratio"),
     CORES("gui", "cores"),

@@ -1,21 +1,49 @@
 package net.michanide.overloadgenerators.tile;
 
+import java.util.function.Predicate;
+
 import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
+
+import mekanism.api.Action;
+import mekanism.api.AutomationType;
+import mekanism.api.IContentsListener;
 import mekanism.api.math.FloatingLong;
 import mekanism.api.providers.IBlockProvider;
+import mekanism.common.capabilities.holder.slot.IInventorySlotHolder;
+import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
+import mekanism.common.integration.computer.SpecialComputerMethodWrapper.ComputerIInventorySlotWrapper;
 import mekanism.common.integration.computer.annotation.ComputerMethod;
+import mekanism.common.integration.computer.annotation.WrappingComputerMethod;
 import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.inventory.container.sync.SyncableDouble;
 import mekanism.common.inventory.container.sync.SyncableFloatingLong;
 import mekanism.common.inventory.container.sync.SyncableInt;
+import mekanism.common.inventory.slot.BasicInventorySlot;
+import mekanism.common.inventory.slot.EnergyInventorySlot;
+import mekanism.common.util.MekanismUtils;
 import net.michanide.overloadgenerators.config.OverGenConfig;
 import net.michanide.overloadgenerators.init.OverGenBlocks;
+import net.michanide.overloadgenerators.item.ItemCore;
 import net.michanide.overloadgenerators.util.GlobalTickHandler;
 import net.michanide.overloadgenerators.util.OverGenMath;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityCPUUsageGenerator extends BlockEntityOverGen {
+    
+    protected int numberOfCores = 0;
+    protected int numberOfCoresLastTick = 0;
+    protected Long coreMultiplier = 1L;
+    protected boolean isSafeMode = false;
+
+    @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getCoreItem", docPlaceholder = "core item slot")
+    protected BasicInventorySlot coreSlot;
+    @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getEnergyItem", docPlaceholder = "energy item slot")
+    protected EnergyInventorySlot energySlot;
+    protected static final Predicate<@NotNull ItemStack> coreSlotValidator = stack -> stack.getItem() instanceof ItemCore;
 
     protected FloatingLong peakGeneration = FloatingLong.ZERO;
     protected Double cpuUsageThreshold = 0.0;
@@ -29,6 +57,7 @@ public class BlockEntityCPUUsageGenerator extends BlockEntityOverGen {
 
     protected BlockEntityCPUUsageGenerator(IBlockProvider blockProvider, BlockPos pos, BlockState state, @Nonnull FloatingLong output) {
         super(blockProvider, pos, state, output);
+        isSafeMode = OverGenConfig.config.isSafeMode.get();
         peakGeneration = OverGenConfig.config.cpuUsageGeneratorGeneration.get();
         cpuUsageThreshold = OverGenConfig.config.cpuUsageGeneratorThreshold.get();
         baseEnergyStorage = OverGenConfig.config.cpuUsageGeneratorStorage.get();
@@ -36,20 +65,61 @@ public class BlockEntityCPUUsageGenerator extends BlockEntityOverGen {
         cpuUsageThresholdMultiplier = 1.0 / (1 - cpuUsageThreshold);
     }
 
+    @Nonnull
     @Override
-    protected void onUpdateServer() {
-        CPUUsage = GlobalTickHandler.getCachedCPUUsage();
-        super.onUpdateServer();
+    protected IInventorySlotHolder getInitialInventory(IContentsListener listener) {
+        InventorySlotHelper builder = InventorySlotHelper.forSide(this::getDirection);
+        builder.addSlot(coreSlot = BasicInventorySlot.at(coreSlotValidator, listener, 17, 35));
+        builder.addSlot(energySlot = EnergyInventorySlot.drain(getEnergyContainer(), listener, 143, 35));
+        return builder.build();
     }
 
     @Override
+    protected void onUpdateServer() {
+        super.onUpdateServer();
+        CPUUsage = GlobalTickHandler.getCachedCPUUsage();
+        Long cachedLastProduction = 0L;
+        Long processTimes = 1L;
+
+        energySlot.drainContainer();
+
+        numberOfCoresLastTick = numberOfCores;
+        numberOfCores = coreSlot.getCount();
+        if(numberOfCores != numberOfCoresLastTick){
+            updateCores();
+        }
+
+        processTimes = isSafeMode ? 1L : coreMultiplier;
+        for(int i = 0; i < processTimes; i++){
+            Long cachedProduction = process();
+            cachedLastProduction += cachedProduction;
+        }
+        lastProductionAmount = FloatingLong.create(cachedLastProduction);
+    }
+
     protected void updateCores(){
-        super.updateCores();
+        // Multiplied by 1L to cast to long
+        coreMultiplier = OverGenMath.pow(2L, numberOfCores * 1L);
+        FloatingLong maxEnergyStorage = baseEnergyStorage.multiply(coreMultiplier);
+        getEnergyContainer().setMaxEnergy(maxEnergyStorage);
+
         setMaxOutput(peakGeneration.multiply(coreMultiplier * 2));
     }
 
-    @Override
-    public FloatingLong getProduction() {
+    protected Long process(){
+        Long cachedProduction = 0L;
+        if (MekanismUtils.canFunction(this) && !getEnergyContainer().getNeeded().isZero()) {
+            setActive(true);
+            FloatingLong production = calcProduction();
+            cachedProduction = production.subtract(getEnergyContainer().insert(production, Action.EXECUTE, AutomationType.INTERNAL)).getValue();
+        } else {
+            setActive(false);
+            cachedProduction = 0L;
+        }
+        return cachedProduction;
+    }
+
+    public FloatingLong calcProduction() {
         if (level == null) {
             return FloatingLong.ZERO;
         }
@@ -59,15 +129,25 @@ public class BlockEntityCPUUsageGenerator extends BlockEntityOverGen {
     }
 
     @ComputerMethod
+    public int getNumberOfCores() {
+        return numberOfCores;
+    }
+
+    @ComputerMethod
     public double getCPUUsage() {
         return CPUUsage;
+    }
+
+    @Override
+    public FloatingLong getProductionRate() {
+        return lastProductionAmount;
     }
 
     @Override
     public void addContainerTrackers(MekanismContainer container) {
         super.addContainerTrackers(container);
         container.track(SyncableFloatingLong.create(this::getMaxOutput, this::setMaxOutput));
-        container.track(SyncableFloatingLong.create(this::getLastProductionAmount, value -> lastProductionAmount = value));
+        container.track(SyncableFloatingLong.create(this::getProductionRate, value -> lastProductionAmount = value));
         container.track(SyncableDouble.create(this::getCPUUsage, value -> CPUUsage = value));
         container.track(SyncableInt.create(this::getNumberOfCores, value -> numberOfCores = value));
     }
