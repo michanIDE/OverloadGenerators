@@ -1,16 +1,14 @@
 package net.michanide.overloadgenerators.util.text;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import mekanism.api.annotations.NothingNullByDefault;
 
 import mekanism.api.text.IHasTextComponent;
 import mekanism.common.MekanismLang;
 import net.michanide.overloadgenerators.OverloadGeneratorsLang;
 import net.michanide.overloadgenerators.config.OverGenConfig;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.network.chat.Component;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
+@NothingNullByDefault
 public class TickTimeDisplay implements IHasTextComponent {
 
     public static final TickTimeDisplay ZERO = of(0L);

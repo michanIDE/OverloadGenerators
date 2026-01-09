@@ -4,19 +4,16 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 
+import org.jetbrains.annotations.NotNull;
+
+import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.AutomationType;
 import mekanism.api.IContentsListener;
-import mekanism.api.annotations.FieldsAreNonnullByDefault;
-import mekanism.api.annotations.NonNull;
 import mekanism.api.math.FloatingLong;
 import mekanism.common.capabilities.energy.BasicEnergyContainer;
-import net.minecraft.MethodsReturnNonnullByDefault;
 
-@FieldsAreNonnullByDefault
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
+@NothingNullByDefault
 public class OverGenEnergyContainer extends BasicEnergyContainer {
 
     public static OverGenEnergyContainer create(FloatingLong maxEnergy, @Nullable IContentsListener listener) {
@@ -34,7 +31,7 @@ public class OverGenEnergyContainer extends BasicEnergyContainer {
         return new OverGenEnergyContainer(maxEnergy, alwaysTrue, internalOnly, listener);
     }
 
-    public static OverGenEnergyContainer create(FloatingLong maxEnergy, Predicate<@NonNull AutomationType> canExtract, Predicate<@NonNull AutomationType> canInsert,
+    public static OverGenEnergyContainer create(FloatingLong maxEnergy, Predicate<@NotNull AutomationType> canExtract, Predicate<@NotNull AutomationType> canInsert,
           @Nullable IContentsListener listener) {
         Objects.requireNonNull(maxEnergy, "Max energy cannot be null");
         Objects.requireNonNull(canExtract, "Extraction validity check cannot be null");
@@ -44,8 +41,8 @@ public class OverGenEnergyContainer extends BasicEnergyContainer {
 
     private FloatingLong currentMaxEnergy;
 
-    protected OverGenEnergyContainer(FloatingLong maxEnergy, Predicate<@NonNull AutomationType> canExtract,
-          Predicate<@NonNull AutomationType> canInsert, @Nullable IContentsListener listener) {
+    protected OverGenEnergyContainer(FloatingLong maxEnergy, Predicate<@NotNull AutomationType> canExtract,
+          Predicate<@NotNull AutomationType> canInsert, @Nullable IContentsListener listener) {
         super(maxEnergy, canExtract, canInsert, listener);
         currentMaxEnergy = getBaseMaxEnergy();
     }

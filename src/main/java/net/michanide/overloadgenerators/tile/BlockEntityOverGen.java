@@ -55,9 +55,9 @@ public class BlockEntityOverGen extends TileEntityMekanism {
     protected Long coreMultiplier = 1L;
     protected boolean isSafeMode = false;
 
-    @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getCoreItem")
+    @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getCoreItem", docPlaceholder = "Core Item")
     protected BasicInventorySlot coreSlot;
-    @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getEnergyItem")
+    @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getEnergyItem", docPlaceholder = "input tank")
     protected EnergyInventorySlot energySlot;
 
     protected static final Predicate<@NotNull ItemStack> coreSlotValidator = stack -> stack.getItem() instanceof ItemCore;
@@ -66,7 +66,7 @@ public class BlockEntityOverGen extends TileEntityMekanism {
         super(blockProvider, pos, state);
         output = out;
         isSafeMode = OverGenConfig.config.isSafeMode.get();
-        addCapabilityResolver(BasicCapabilityResolver.constant(Capabilities.CONFIG_CARD_CAPABILITY, this));
+        addCapabilityResolver(BasicCapabilityResolver.constant(Capabilities.CONFIG_CARD, this));
     }
 
     @Nonnull
