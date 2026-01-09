@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "result": {
+      "item": "overloadgenerators:core"
+    },
+    "pattern": [
+      "III",
+      "ACA",
+      "GGG"
+    ],
+    "key": {
+        "A": {
+            "tag": "forge:ingots/gold"
+        },
+        "C": {
+            "tag": "forge:circuits/basic"
+        },
+        "G": {
+            "tag": "forge:glass"
+        },
+        "I": {
+            "tag": "forge:ingots/iron"
+        }
+    }
+}

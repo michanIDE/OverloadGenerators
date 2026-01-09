@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "overloadgenerators:block/tick_time_generator"
+  }
+}
