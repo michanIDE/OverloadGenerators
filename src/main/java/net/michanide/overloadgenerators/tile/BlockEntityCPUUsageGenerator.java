@@ -90,8 +90,10 @@ public class BlockEntityCPUUsageGenerator extends BlockEntityOverGen {
         }
 
         processTimes = isSafeMode ? 1L : coreMultiplier;
+        
+        FloatingLong production = calcProduction();
         for(int i = 0; i < processTimes; i++){
-            Long cachedProduction = process();
+            Long cachedProduction = process(production);
             cachedLastProduction += cachedProduction;
         }
         lastProductionAmount = FloatingLong.create(cachedLastProduction);
@@ -106,11 +108,10 @@ public class BlockEntityCPUUsageGenerator extends BlockEntityOverGen {
         setMaxOutput(peakGeneration.multiply(coreMultiplier * 2));
     }
 
-    protected Long process(){
+    protected Long process(FloatingLong production){
         Long cachedProduction = 0L;
         if (MekanismUtils.canFunction(this) && !getEnergyContainer().getNeeded().isZero()) {
             setActive(true);
-            FloatingLong production = calcProduction();
             cachedProduction = production.subtract(getEnergyContainer().insert(production, Action.EXECUTE, AutomationType.INTERNAL)).getValue();
         } else {
             setActive(false);

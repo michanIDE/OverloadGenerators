@@ -146,9 +146,6 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
     implementation fg.deobf("mekanism:Mekanism:${minecraft_version}-${mekanism_version}")
     implementation fg.deobf("mekanism:MekanismGenerators:${minecraft_version}-${mekanism_version}")
-
-
-    implementation("com.github.oshi:oshi-core:6.9.2")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

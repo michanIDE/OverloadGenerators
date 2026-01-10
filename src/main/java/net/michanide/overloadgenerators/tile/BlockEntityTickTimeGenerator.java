@@ -88,8 +88,9 @@ public class BlockEntityTickTimeGenerator extends BlockEntityOverGen {
         }
 
         processTimes = isSafeMode ? 1L : coreMultiplier;
+        FloatingLong production = calcProduction();
         for(int i = 0; i < processTimes; i++){
-            Long cachedProduction = process();
+            Long cachedProduction = process(production);
             cachedLastProduction += cachedProduction;
         }
         lastProductionAmount = FloatingLong.create(cachedLastProduction);
@@ -102,11 +103,10 @@ public class BlockEntityTickTimeGenerator extends BlockEntityOverGen {
         getEnergyContainer().setMaxEnergy(maxEnergyStorage);
     }
 
-    protected Long process(){
+    protected Long process(FloatingLong production){
         Long cachedProduction = 0L;
         if (MekanismUtils.canFunction(this) && !getEnergyContainer().getNeeded().isZero()) {
             setActive(true);
-            FloatingLong production = calcProduction();
             cachedProduction = production.subtract(getEnergyContainer().insert(production, Action.EXECUTE, AutomationType.INTERNAL)).getValue();
         } else {
             setActive(false);
@@ -123,7 +123,8 @@ public class BlockEntityTickTimeGenerator extends BlockEntityOverGen {
             return FloatingLong.ZERO;
         }
         Long lag_ms = (tickTime - tickTimeThreshold) / 1_000_000L;
-        return lag_ms > 0 ? baseGeneration.multiply(OverGenMath.pow(lag_ms, tickTimeExponent)) : FloatingLong.ZERO;
+        Long multiplier = OverGenMath.pow(lag_ms, tickTimeExponent);
+        return lag_ms > 0 ? baseGeneration.multiply(multiplier) : FloatingLong.ZERO;
     }
 
     @ComputerMethod
