@@ -17,9 +17,9 @@ import mekanism.common.integration.computer.SpecialComputerMethodWrapper.Compute
 import mekanism.common.integration.computer.annotation.ComputerMethod;
 import mekanism.common.integration.computer.annotation.WrappingComputerMethod;
 import mekanism.common.inventory.container.MekanismContainer;
+import mekanism.common.inventory.container.sync.SyncableDouble;
 import mekanism.common.inventory.container.sync.SyncableFloatingLong;
 import mekanism.common.inventory.container.sync.SyncableInt;
-import mekanism.common.inventory.container.sync.SyncableLong;
 import mekanism.common.inventory.slot.BasicInventorySlot;
 import mekanism.common.inventory.slot.EnergyInventorySlot;
 import mekanism.common.util.MekanismUtils;
@@ -32,8 +32,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BlockEntityTickTimeGenerator extends BlockEntityOverGen {
-        
+public class BlockEntityMemoryUsageGenerator extends BlockEntityOverGen {
+    
     protected int numberOfCores = 0;
     protected int numberOfCoresLastTick = 0;
     protected Long coreMultiplier = 1L;
@@ -45,22 +45,24 @@ public class BlockEntityTickTimeGenerator extends BlockEntityOverGen {
     protected EnergyInventorySlot energySlot;
     protected static final Predicate<@NotNull ItemStack> coreSlotValidator = stack -> stack.getItem() instanceof ItemCore;
 
-    protected FloatingLong baseGeneration = FloatingLong.ZERO;
-    protected Long tickTimeThreshold = 0L;
-    private Long tickTime = 0L;
-    private Long tickTimeExponent = 1L;
+    protected FloatingLong peakGeneration = FloatingLong.ZERO;
+    protected Double memoryUsageThreshold = 0.0;
+    protected Double memoryUsageThresholdMultiplier = 0.0;
+    private Double MemoryUsage = 0.0;
+    private Long outputExponent = 1L;
 
-    public BlockEntityTickTimeGenerator(BlockPos pos, BlockState state) {
-        this(OverGenBlocks.TICK_TIME_GENERATOR, pos, state, FloatingLong.MAX_VALUE);
+    public BlockEntityMemoryUsageGenerator(BlockPos pos, BlockState state) {
+        this(OverGenBlocks.MEMORY_USAGE_GENERATOR, pos, state, OverGenConfig.config.memoryUsageGeneratorGeneration.get().multiply(2));
     }
 
-    protected BlockEntityTickTimeGenerator(IBlockProvider blockProvider, BlockPos pos, BlockState state, @Nonnull FloatingLong output) {
+    protected BlockEntityMemoryUsageGenerator(IBlockProvider blockProvider, BlockPos pos, BlockState state, @Nonnull FloatingLong output) {
         super(blockProvider, pos, state, output);
         isSafeMode = OverGenConfig.config.isSafeMode.get();
-        baseGeneration = OverGenConfig.config.tickTimeGeneratorGeneration.get();
-        tickTimeThreshold = OverGenConfig.config.tickTimeGeneratorThreshold.get();
-        baseEnergyStorage = OverGenConfig.config.tickTimeGeneratorStorage.get();
-        tickTimeExponent = OverGenConfig.config.tickTimeGeneratorExponent.get();
+        peakGeneration = OverGenConfig.config.memoryUsageGeneratorGeneration.get();
+        memoryUsageThreshold = OverGenConfig.config.memoryUsageGeneratorThreshold.get();
+        baseEnergyStorage = OverGenConfig.config.memoryUsageGeneratorStorage.get();
+        outputExponent = OverGenConfig.config.memoryUsageGeneratorExponent.get();
+        memoryUsageThresholdMultiplier = 1.0 / (1 - memoryUsageThreshold);
     }
 
     @Nonnull
@@ -75,7 +77,7 @@ public class BlockEntityTickTimeGenerator extends BlockEntityOverGen {
     @Override
     protected void onUpdateServer() {
         super.onUpdateServer();
-        tickTime = GlobalTickHandler.getCachedTickTime();
+        MemoryUsage = GlobalTickHandler.getCachedMemoryUsage();
         Long cachedLastProduction = 0L;
         Long processTimes = 1L;
 
@@ -88,6 +90,7 @@ public class BlockEntityTickTimeGenerator extends BlockEntityOverGen {
         }
 
         processTimes = isSafeMode ? 1L : coreMultiplier;
+        
         FloatingLong production = calcProduction();
         for(int i = 0; i < processTimes; i++){
             cachedLastProduction += process(production);
@@ -100,6 +103,8 @@ public class BlockEntityTickTimeGenerator extends BlockEntityOverGen {
         coreMultiplier = OverGenMath.pow(2L, numberOfCores * 1L);
         FloatingLong maxEnergyStorage = baseEnergyStorage.multiply(coreMultiplier);
         getEnergyContainer().setMaxEnergy(maxEnergyStorage);
+
+        setMaxOutput(peakGeneration.multiply(coreMultiplier * 2));
     }
 
     protected Long process(FloatingLong production){
@@ -118,12 +123,9 @@ public class BlockEntityTickTimeGenerator extends BlockEntityOverGen {
         if (level == null) {
             return FloatingLong.ZERO;
         }
-        if (tickTime < tickTimeThreshold) {
-            return FloatingLong.ZERO;
-        }
-        Long lag_ms = (tickTime - tickTimeThreshold) / 1_000_000L;
-        Long multiplier = OverGenMath.pow(lag_ms, tickTimeExponent);
-        return lag_ms > 0 ? baseGeneration.multiply(multiplier) : FloatingLong.ZERO;
+        Double scaledMemoryUsage = Math.max(0.0, (getMemoryUsage() - memoryUsageThreshold) * memoryUsageThresholdMultiplier);
+        Double multiplier = OverGenMath.pow(scaledMemoryUsage, outputExponent);
+        return peakGeneration.multiply(multiplier);
     }
 
     @ComputerMethod
@@ -132,8 +134,8 @@ public class BlockEntityTickTimeGenerator extends BlockEntityOverGen {
     }
 
     @ComputerMethod
-    public Long getTickTime() {
-        return tickTime;
+    public double getMemoryUsage() {
+        return MemoryUsage;
     }
 
     @Override
@@ -146,7 +148,7 @@ public class BlockEntityTickTimeGenerator extends BlockEntityOverGen {
         super.addContainerTrackers(container);
         container.track(SyncableFloatingLong.create(this::getMaxOutput, this::setMaxOutput));
         container.track(SyncableFloatingLong.create(this::getProductionRate, value -> lastProductionAmount = value));
-        container.track(SyncableLong.create(this::getTickTime, value -> tickTime = value));
+        container.track(SyncableDouble.create(this::getMemoryUsage, value -> MemoryUsage = value));
         container.track(SyncableInt.create(this::getNumberOfCores, value -> numberOfCores = value));
     }
 }

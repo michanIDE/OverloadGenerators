@@ -93,8 +93,7 @@ public class BlockEntityCPUUsageGenerator extends BlockEntityOverGen {
         
         FloatingLong production = calcProduction();
         for(int i = 0; i < processTimes; i++){
-            Long cachedProduction = process(production);
-            cachedLastProduction += cachedProduction;
+            cachedLastProduction += process(production);
         }
         lastProductionAmount = FloatingLong.create(cachedLastProduction);
     }

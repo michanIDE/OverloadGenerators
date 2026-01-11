@@ -9,6 +9,7 @@ import mekanism.common.content.blocktype.BlockTypeTile.BlockTileBuilder;
 import net.michanide.overloadgenerators.OverloadGeneratorsLang;
 import net.michanide.overloadgenerators.config.OverGenConfig;
 import net.michanide.overloadgenerators.tile.BlockEntityCPUUsageGenerator;
+import net.michanide.overloadgenerators.tile.BlockEntityMemoryUsageGenerator;
 import net.michanide.overloadgenerators.tile.BlockEntityOpticalLatticeClock;
 import net.michanide.overloadgenerators.tile.BlockEntityTickTimeGenerator;
 
@@ -32,6 +33,15 @@ public class OverGenBlockTypes {
             .withGui(() -> OverGenContainerTypes.TICK_TIME_GENERATOR)
             .withEnergyConfig(OverGenConfig.config.tickTimeGeneratorStorage)
             .withComputerSupport("tickTimeGenerator")
+            .replace(Attributes.ACTIVE)
+            .build();
+
+    // Memory Usage Generator
+    public static final Generator<BlockEntityMemoryUsageGenerator> MEMORY_USAGE_GENERATOR = GeneratorBuilder
+            .createGenerator(() -> OverGenBlockEntity.MEMORY_USAGE_GENERATOR, OverloadGeneratorsLang.MEMORY_USAGE_GENERATOR_DESCRIPTION)
+            .withGui(() -> OverGenContainerTypes.MEMORY_USAGE_GENERATOR)
+            .withEnergyConfig(OverGenConfig.config.memoryUsageGeneratorStorage)
+            .withComputerSupport("memoryUsageGenerator")
             .replace(Attributes.ACTIVE)
             .build();
 

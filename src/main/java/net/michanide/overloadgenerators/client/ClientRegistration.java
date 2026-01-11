@@ -3,6 +3,7 @@ package net.michanide.overloadgenerators.client;
 import mekanism.client.ClientRegistrationUtil;
 import net.michanide.overloadgenerators.OverloadGenerators;
 import net.michanide.overloadgenerators.client.gui.GuiCPUUsageGenerator;
+import net.michanide.overloadgenerators.client.gui.GuiMemoryUsageGenerator;
 import net.michanide.overloadgenerators.client.gui.GuiTickTimeGenerator;
 import net.michanide.overloadgenerators.init.OverGenContainerTypes;
 import net.minecraft.core.registries.Registries;
@@ -20,6 +21,7 @@ public class ClientRegistration {
     public static void registerContainers(RegisterEvent event) {
         event.register(Registries.MENU, helper -> {
             ClientRegistrationUtil.registerScreen(OverGenContainerTypes.CPU_USAGE_GENERATOR, GuiCPUUsageGenerator::new);
+            ClientRegistrationUtil.registerScreen(OverGenContainerTypes.MEMORY_USAGE_GENERATOR, GuiMemoryUsageGenerator::new);
             ClientRegistrationUtil.registerScreen(OverGenContainerTypes.TICK_TIME_GENERATOR, GuiTickTimeGenerator::new);
         });
     }

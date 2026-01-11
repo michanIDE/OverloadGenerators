@@ -9,6 +9,7 @@ import mekanism.generators.common.content.blocktype.Generator;
 import net.michanide.overloadgenerators.OverloadGenerators;
 import net.michanide.overloadgenerators.block.BlockOpticalLatticeClock;
 import net.michanide.overloadgenerators.tile.BlockEntityCPUUsageGenerator;
+import net.michanide.overloadgenerators.tile.BlockEntityMemoryUsageGenerator;
 import net.michanide.overloadgenerators.tile.BlockEntityTickTimeGenerator;
 import net.minecraft.world.level.material.MapColor;
 public class OverGenBlocks {
@@ -18,6 +19,7 @@ public class OverGenBlocks {
 
     public static final BlockDeferredRegister BLOCKS = new BlockDeferredRegister(OverloadGenerators.MOD_ID);
     public static final BlockRegistryObject<BlockTileModel<BlockEntityCPUUsageGenerator, Generator<BlockEntityCPUUsageGenerator>>, ItemBlockMachine> CPU_USAGE_GENERATOR = BLOCKS.register("cpu_usage_generator", () -> new BlockTileModel<>(OverGenBlockTypes.CPU_USAGE_GENERATOR, properties -> properties.mapColor(MapColor.METAL)), ItemBlockMachine::new);
+    public static final BlockRegistryObject<BlockTileModel<BlockEntityMemoryUsageGenerator, Generator<BlockEntityMemoryUsageGenerator>>, ItemBlockMachine> MEMORY_USAGE_GENERATOR = BLOCKS.register("memory_usage_generator", () -> new BlockTileModel<>(OverGenBlockTypes.MEMORY_USAGE_GENERATOR, properties -> properties.mapColor(MapColor.METAL)), ItemBlockMachine::new);
     public static final BlockRegistryObject<BlockTileModel<BlockEntityTickTimeGenerator, Generator<BlockEntityTickTimeGenerator>>, ItemBlockMachine> TICK_TIME_GENERATOR = BLOCKS.register("tick_time_generator", () -> new BlockTileModel<>(OverGenBlockTypes.TICK_TIME_GENERATOR, properties -> properties.mapColor(MapColor.METAL)), ItemBlockMachine::new);
 
     public static final BlockRegistryObject<BlockOpticalLatticeClock, ItemBlockTooltip<BlockOpticalLatticeClock>> OPTICAL_LATTICE_CLOCK = BLOCKS.registerDefaultProperties("optical_lattice_clock", BlockOpticalLatticeClock::new, ItemBlockTooltip<BlockOpticalLatticeClock>::new);

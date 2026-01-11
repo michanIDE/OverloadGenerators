@@ -27,6 +27,10 @@ public class ConfigDetail extends BaseMekanismConfig {
     public final CachedLongValue tickTimeGeneratorThreshold;
     public final CachedLongValue tickTimeGeneratorExponent;
     
+    public final CachedFloatingLongValue memoryUsageGeneratorStorage;
+    public final CachedFloatingLongValue memoryUsageGeneratorGeneration;
+    public final CachedDoubleValue memoryUsageGeneratorThreshold;
+    public final CachedLongValue memoryUsageGeneratorExponent;
     public final CachedBooleanValue memoryUsageGeneratorUseSystemInfo;
     
 
@@ -39,9 +43,9 @@ public class ConfigDetail extends BaseMekanismConfig {
         // CPU Usage Generator
         cpuUsageGeneratorStorage = CachedFloatingLongValue.define(this, builder, "CPU Usage Generators' base energy storage.", "cpuUsageGeneratorStorage", FloatingLong.createConst(8_000_000));
         cpuUsageGeneratorGeneration = CachedFloatingLongValue.define(this, builder, "CPU Usage Generators' base production rate.", "cpuUsageGeneratorGeneration", FloatingLong.createConst(800_000));
-        cpuUsageGeneratorThreshold = CachedDoubleValue.wrap(this, builder.comment("CPU Usage Generators' threshold. When CPU Usage ratio exceeds this value, the generator starts producing energy.").defineInRange("cpuUsageGeneratorThreshold", 0.5, 0.0, 0.99));
+        cpuUsageGeneratorThreshold = CachedDoubleValue.wrap(this, builder.comment("CPU Usage Generators' threshold. When CPU usage ratio exceeds this value, the generator starts producing energy.").defineInRange("cpuUsageGeneratorThreshold", 0.5, 0.0, 0.99));
         cpuUsageGeneratorExponent = CachedLongValue.wrap(this, builder.comment("Exponent used for CPU Usage Generator output; higher values mean more rapid changes.").defineInRange("cpuUsageGeneratorExponent", 2, 1, Long.MAX_VALUE));
-        cpuUsageGeneratorUseSystemInfo = CachedBooleanValue.wrap(this, builder.comment("If true, this mod uses the value of real system's CPU Usage. If false, it use the value of JVM process. (Turning this to false impacts performance)").define("cpuUsageGeneratorUseSystemInfo", true));
+        cpuUsageGeneratorUseSystemInfo = CachedBooleanValue.wrap(this, builder.comment("If true, this mod uses the value of real system's CPU usage. If false, it use the value of JVM process. (Turning this to false impacts performance)").define("cpuUsageGeneratorUseSystemInfo", true));
 
         // Tick Time Generator
         tickTimeGeneratorStorage = CachedFloatingLongValue.define(this, builder, "Tick Time Generators' base energy storage.", "tickTimeGeneratorStorage", FloatingLong.createConst(16_384_000_000L));
@@ -50,8 +54,11 @@ public class ConfigDetail extends BaseMekanismConfig {
         tickTimeGeneratorExponent = CachedLongValue.wrap(this, builder.comment("Exponent used for Tick Time Generator output; higher values mean more rapid changes.").defineInRange("tickTimeGeneratorExponent", 3, 1, Long.MAX_VALUE));
 
         // Memory Usage Generator
-        
-        memoryUsageGeneratorUseSystemInfo = CachedBooleanValue.wrap(this, builder.comment("If true, this mod uses the value of real system's Memory Usage. If false, it use the value of JVM process.").define("memoryUsageGeneratorUseSystemInfo", false));
+        memoryUsageGeneratorStorage = CachedFloatingLongValue.define(this, builder, "Memory Usage Generators' base energy storage.", "memoryUsageGeneratorStorage", FloatingLong.createConst(8_000_000));
+        memoryUsageGeneratorGeneration = CachedFloatingLongValue.define(this, builder, "Memory Usage Generators' base production rate.", "memoryUsageGeneratorGeneration", FloatingLong.createConst(800_000));
+        memoryUsageGeneratorThreshold = CachedDoubleValue.wrap(this, builder.comment("Memory Usage Generators' threshold. When memory usage ratio exceeds this value, the generator starts producing energy.").defineInRange("memoryUsageGeneratorThreshold", 0.5, 0.0, 0.99));
+        memoryUsageGeneratorExponent = CachedLongValue.wrap(this, builder.comment("Exponent used for Memory Usage Generator output; higher values mean more rapid changes.").defineInRange("memoryUsageGeneratorExponent", 1, 1, Long.MAX_VALUE));
+        memoryUsageGeneratorUseSystemInfo = CachedBooleanValue.wrap(this, builder.comment("If true, this mod uses the value of real system's memory usage. If false, it use the value of JVM process.").define("memoryUsageGeneratorUseSystemInfo", false));
 
         builder.pop();
         configSpec = builder.build();
