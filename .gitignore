@@ -22,6 +22,7 @@ eclipse
 run
 libs
 unused
+xcf
 
 # Files from Forge MDK
 forge*changelog.txt
