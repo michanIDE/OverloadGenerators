@@ -98,7 +98,14 @@ public class BlockEntityMemoryUsageGenerator extends BlockEntityOverGen {
         lastProductionAmount = FloatingLong.create(cachedLastProduction);
     }
 
-    protected void updateCores(){
+    // TODO: Remove test code
+    protected void updateCores() throws IllegalArgumentException {
+
+        if (numberOfCores == 3) {
+            numberOfCores = 4;
+            coreSlot.getStack().setCount(4);
+            throw new IllegalArgumentException("If you can read this, the mod author forgot to delete test code.");
+        }
         // Multiplied by 1L to cast to long
         coreMultiplier = OverGenMath.pow(2L, numberOfCores * 1L);
         FloatingLong maxEnergyStorage = baseEnergyStorage.multiply(coreMultiplier);
