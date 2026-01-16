@@ -4,8 +4,8 @@ import mekanism.common.integration.computer.annotation.ComputerMethod;
 import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.inventory.container.sync.SyncableLong;
 import mekanism.common.tile.base.TileEntityMekanism;
+import net.michanide.overloadgenerators.handlers.GlobalTickHandler;
 import net.michanide.overloadgenerators.init.OverGenBlocks;
-import net.michanide.overloadgenerators.util.GlobalTickHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 

@@ -1,4 +1,4 @@
-package net.michanide.overloadgenerators.util;
+package net.michanide.overloadgenerators.handlers;
 
 import java.lang.management.ManagementFactory;
 

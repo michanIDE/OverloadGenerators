@@ -32,6 +32,9 @@ public class ConfigDetail extends BaseMekanismConfig {
     public final CachedDoubleValue memoryUsageGeneratorThreshold;
     public final CachedLongValue memoryUsageGeneratorExponent;
     public final CachedBooleanValue memoryUsageGeneratorUseSystemInfo;
+
+    public final CachedFloatingLongValue serverCrashGeneratorStorage;
+    public final CachedFloatingLongValue serverCrashGeneratorGeneration;
     
 
     ConfigDetail() {
@@ -59,6 +62,11 @@ public class ConfigDetail extends BaseMekanismConfig {
         memoryUsageGeneratorThreshold = CachedDoubleValue.wrap(this, builder.comment("Memory Usage Generators' threshold. When memory usage ratio exceeds this value, the generator starts producing energy.").defineInRange("memoryUsageGeneratorThreshold", 0.5, 0.0, 0.99));
         memoryUsageGeneratorExponent = CachedLongValue.wrap(this, builder.comment("Exponent used for Memory Usage Generator output; higher values mean more rapid changes.").defineInRange("memoryUsageGeneratorExponent", 1, 1, Long.MAX_VALUE));
         memoryUsageGeneratorUseSystemInfo = CachedBooleanValue.wrap(this, builder.comment("If true, this mod uses the value of real system's memory usage. If false, it use the value of JVM process.").define("memoryUsageGeneratorUseSystemInfo", false));
+
+        // Server Crash Generator
+        serverCrashGeneratorStorage = CachedFloatingLongValue.define(this, builder, "Server Crash Generators' energy storage.", "serverCrashGeneratorStorage", FloatingLong.createConst(Long.MAX_VALUE));
+        serverCrashGeneratorGeneration = CachedFloatingLongValue.define(this, builder, "Server Crash Generators' energy generation per crash.", "serverCrashGeneratorGeneration", FloatingLong.createConst(2_500_000_000_000L));
+        
 
         builder.pop();
         configSpec = builder.build();

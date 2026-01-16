@@ -1,9 +1,11 @@
-package net.michanide.overloadgenerators.util;
+package net.michanide.overloadgenerators.handlers;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.saveddata.SavedData;
 
 public class CrashSyncData extends SavedData{
+    public static final String DATA_NAME = "overgen_crash_checker";
+
     private boolean cleanShutdown = true;
 
     // Standard Forge SavedData boilerplate
@@ -16,8 +18,6 @@ public class CrashSyncData extends SavedData{
     @Override
     public CompoundTag save(CompoundTag nbt) {
         nbt.putBoolean("cleanShutdown", cleanShutdown);
-        System.out.println("Saving CrashSyncData:");
-        System.out.println(nbt);
         return nbt;
     }
 
