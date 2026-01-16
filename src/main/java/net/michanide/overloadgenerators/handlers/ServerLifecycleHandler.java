@@ -1,7 +1,5 @@
 package net.michanide.overloadgenerators.handlers;
 
-import org.stringtemplate.v4.compiler.CodeGenerator.primary_return;
-
 import net.michanide.overloadgenerators.OverloadGenerators;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.storage.DimensionDataStorage;
