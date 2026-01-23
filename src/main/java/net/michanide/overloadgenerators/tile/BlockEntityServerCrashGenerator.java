@@ -14,6 +14,7 @@ import mekanism.common.integration.computer.annotation.ComputerMethod;
 import mekanism.common.integration.computer.annotation.WrappingComputerMethod;
 import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.inventory.container.sync.SyncableFloatingLong;
+import mekanism.common.inventory.container.sync.SyncableLong;
 import mekanism.common.inventory.slot.EnergyInventorySlot;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.NBTUtils;
@@ -122,5 +123,6 @@ public class BlockEntityServerCrashGenerator extends BlockEntityOverGen {
         super.addContainerTrackers(container);
         container.track(SyncableFloatingLong.create(this::getMaxOutput, this::setMaxOutput));
         container.track(SyncableFloatingLong.create(this::getProductionRate, value -> lastProductionAmount = value));
+        container.track(SyncableLong.create(() -> tileCrashCount, value -> tileCrashCount = value));
     }
 }
