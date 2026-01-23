@@ -119,7 +119,7 @@ public class BlockEntityCPUUsageGenerator extends BlockEntityOverGen {
         return cachedProduction;
     }
 
-    public FloatingLong calcProduction() {
+    protected FloatingLong calcProduction() {
         if (level == null) {
             return FloatingLong.ZERO;
         }

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "overloadgenerators:block/server_crash_generator"
+    }
+  }
+}

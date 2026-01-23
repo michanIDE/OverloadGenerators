@@ -11,14 +11,15 @@ public enum OverloadGeneratorsLang implements ILangEntry {
     CPU_USAGE("gui", "cpu_usage_ratio"),
     MEMORY_USAGE("gui", "memory_usage_ratio"),
     TICK_TIME("gui", "tick_time"),
+    CRASH_COUNT("gui", "crash_count"),
     CORES("gui", "cores"),
     GENERIC_MILLISECONDS("gui", "generic_milliseconds"),
     GENERIC_NANOSECONDS("gui", "generic_nanoseconds"),
-    VALUE_AND_THRESHOLD("gui", "value_and_threshold"),
 
     CPU_USAGE_GENERATOR_DESCRIPTION("description", "cpu_usage_generator"),
     MEMORY_USAGE_GENERATOR_DESCRIPTION("description", "memory_usage_generator"),
     TICK_TIME_GENERATOR_DESCRIPTION("description", "tick_time_generator"),
+    SERVER_CRASH_GENERATOR_DESCRIPTION("description", "server_crash_generator"),
     OPTICAL_LATTICE_CLOCK_DESCRIPTION("description", "optical_lattice_clock");
 
     private final String key;

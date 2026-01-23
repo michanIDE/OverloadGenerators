@@ -3,20 +3,24 @@
     "block.overloadgenerators.memory_usage_generator": "メモリ使用率発電機",
     "block.overloadgenerators.tick_time_generator": "ティック時間発電機",
     "block.overloadgenerators.optical_lattice_clock": "光格子時計",
+    "block.overloadgenerators.server_crash_generator": "サーバークラッシュ発電機",
     
     "container.overloadgenerators.cpu_usage_generator": "CPU使用率発電機",
     "container.overloadgenerators.memory_usage_generator": "CPU使用率発電機",
     "container.overloadgenerators.tick_time_generator": "ティック時間発電機",
+    "container.overloadgenerators.server_crash_generator": "サーバークラッシュ発電機",
 
     "description.overloadgenerators.cpu_usage_generator": "CPU使用率に基づいて電力を生成する発電機です。(サーバーは食べ物と言いますし…)",
     "description.overloadgenerators.memory_usage_generator": "メモリ使用率に基づいて電力を生成する発電機です。利用可能なメモリが少ないほど、より多くの電力が生成されます。(\"ゴミ収集係\"に謝罪したほうがいいかもしれません。)",
     "description.overloadgenerators.tick_time_generator": "ティック処理時間を電力に変換します。ラグは燃料です。",
     "description.overloadgenerators.optical_lattice_clock": "微弱な時間の流れ方の変化も検出できる、非常に精密な時計です。",
+    "description.overloadgenerators.server_crash_generator": "巨大な時空の歪みを吸収し、それをRFに変換する発電機です。サーバーが混沌としているほど、より安定した電力出力が得られます。",
 
     "gui.overloadgenerators.cpu_usage_ratio": "CPU使用率: %1$s",
     "gui.overloadgenerators.memory_usage_ratio": "メモリ使用率: %1$s",
     "gui.overloadgenerators.cores": "コア数: %1$s",
     "gui.overloadgenerators.tick_time": "ティック時間: %1$s",
+    "gui.overloadgenerators.crash_count": "クラッシュ数: %1$s / %2$s",
 
     "item.overloadgenerators.core": "コア"
 

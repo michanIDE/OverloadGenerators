@@ -2,6 +2,8 @@
     "values": [
         "overloadgenerators:tick_time_generator",
         "overloadgenerators:cpu_usage_generator",
-        "overloadgenerators:optical_lattice_clock"
+        "overloadgenerators:optical_lattice_clock",
+        "overloadgenerators:memory_usage_generator",
+        "overloadgenerators:server_crash_generator"
     ]
 }

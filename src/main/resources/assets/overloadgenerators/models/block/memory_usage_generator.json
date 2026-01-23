@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "north": "overloadgenerators:block/memory_usage_generator",
+    "south": "overloadgenerators:block/memory_usage_generator",
+    "east": "overloadgenerators:block/memory_usage_generator",
+    "west": "overloadgenerators:block/memory_usage_generator",
+    "up": "overloadgenerators:block/memory_usage_generator_top",
+    "down": "overloadgenerators:block/memory_usage_generator_top",
+    "particle": "overloadgenerators:block/memory_usage_generator"
+  }
+}

@@ -10,23 +10,26 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = OverloadGenerators.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ServerLifecycleHandler {
-    private static boolean crashDetected = false;
-    private static ServerCrashGeneratorMapData crashData = null;
+    public static final long NOT_READY = -1L;
 
+    private static boolean crashDetected = false;
+    private static long totalCrashCount = NOT_READY;
+
+    // TODO: Change event from ServerStartedEvent to tick event
     @SubscribeEvent
     public static void onServerStarted(ServerStartedEvent event) {
         ServerLevel level = event.getServer().overworld();
         DimensionDataStorage storage = level.getDataStorage();
         CrashSyncData crashSyncData = storage.computeIfAbsent(CrashSyncData::load, CrashSyncData::new, CrashSyncData.DATA_NAME);
-        crashData = storage.computeIfAbsent(ServerCrashGeneratorMapData::load, ServerCrashGeneratorMapData::new, ServerCrashGeneratorMapData.DATA_NAME);
-
-        System.out.println("Previous clean shutdown: " + crashSyncData.wasClean());
 
         if (!crashSyncData.wasClean()) {
             crashDetected = true;
-            crashData.updateGeneratorsCrashCount();
+            totalCrashCount = crashSyncData.getTotalCrashCount() + 1;
+            crashSyncData.setTotalCrashCount(totalCrashCount);
+        } else {
+            crashDetected = false;
+            totalCrashCount = crashSyncData.getTotalCrashCount();
         }
-        crashData.setInitialized(true);
 
         // Set to false immediately for the current session
         crashSyncData.setClean(false);
@@ -46,8 +49,8 @@ public class ServerLifecycleHandler {
         return crashDetected;
     }
 
-    public static ServerCrashGeneratorMapData getCrashData() {
-        return crashData;
+    public static long getTotalCrashCount() {
+        return totalCrashCount;
     }
     
 }

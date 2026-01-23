@@ -3,23 +3,26 @@
     "block.overloadgenerators.memory_usage_generator": "Memory Usage Generator",
     "block.overloadgenerators.tick_time_generator": "Tick Time Generator",
     "block.overloadgenerators.optical_lattice_clock": "Optical Lattice Clock",
+    "block.overloadgenerators.server_crash_generator": "Server Crash Generator",
     
     "container.overloadgenerators.cpu_usage_generator": "CPU Usage Generator",
     "container.overloadgenerators.memory_usage_generator": "Memory Usage Generator",
     "container.overloadgenerators.tick_time_generator": "Tick Time Generator",
+    "container.overloadgenerators.server_crash_generator": "Server Crash Generator",
 
     "description.overloadgenerators.cpu_usage_generator": "Generates energy from CPU usage. Because thermal throttling is just free resistance.",
     "description.overloadgenerators.memory_usage_generator": "Generates energy from Memory usage. Less available memory means more power. (But you should apologize to the garbage collector)",
     "description.overloadgenerators.tick_time_generator": "More lag, more power. Converts tick duration into energy.",
     "description.overloadgenerators.optical_lattice_clock": "An extremely precise clock capable of detecting even the slightest variations in the flow of time.",
+    "description.overloadgenerators.server_crash_generator": "This generator absorbs the massive spacetime distortions and converts it into RF. The more chaotic the server, the more stable the power output.",
 
     "gui.overloadgenerators.cpu_usage_ratio": "CPU Usage: %1$s",
     "gui.overloadgenerators.memory_usage_ratio": "Memory Usage: %1$s",
     "gui.overloadgenerators.cores": "Cores: %1$s",
     "gui.overloadgenerators.tick_time": "Tick Time: %1$s",
+    "gui.overloadgenerators.crash_count": "Crash: %1$s / %2$s",
     "gui.overloadgenerators.generic_milliseconds": "%1$s ms",
     "gui.overloadgenerators.generic_nanoseconds": "%1$s ns",
-
 
     "item.overloadgenerators.core": "Core"
     

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "overloadgenerators:block/memory_usage_generator"
+    }
+  }
+}

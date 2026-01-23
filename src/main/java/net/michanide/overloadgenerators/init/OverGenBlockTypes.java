@@ -11,6 +11,7 @@ import net.michanide.overloadgenerators.config.OverGenConfig;
 import net.michanide.overloadgenerators.tile.BlockEntityCPUUsageGenerator;
 import net.michanide.overloadgenerators.tile.BlockEntityMemoryUsageGenerator;
 import net.michanide.overloadgenerators.tile.BlockEntityOpticalLatticeClock;
+import net.michanide.overloadgenerators.tile.BlockEntityServerCrashGenerator;
 import net.michanide.overloadgenerators.tile.BlockEntityTickTimeGenerator;
 
 public class OverGenBlockTypes {
@@ -44,6 +45,15 @@ public class OverGenBlockTypes {
             .withComputerSupport("memoryUsageGenerator")
             .replace(Attributes.ACTIVE)
             .build();
+
+    // Server Crash Generator
+	public static final Generator<BlockEntityServerCrashGenerator> SERVER_CRASH_GENERATOR = GeneratorBuilder
+			.createGenerator(() -> OverGenBlockEntity.SERVER_CRASH_GENERATOR, OverloadGeneratorsLang.SERVER_CRASH_GENERATOR_DESCRIPTION)
+			.withGui(() -> OverGenContainerTypes.SERVER_CRASH_GENERATOR)
+			.withEnergyConfig(OverGenConfig.config.serverCrashGeneratorStorage)
+			.withComputerSupport("serverCrashGenerator")
+			.replace(Attributes.ACTIVE)
+			.build();
 
     // Optical Lattice Clock
     public static final BlockTypeTile<BlockEntityOpticalLatticeClock> OPTICAL_LATTICE_CLOCK = BlockTileBuilder
