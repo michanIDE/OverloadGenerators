@@ -1,0 +1,31 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "result": {
+      "item": "overloadgenerators:server_crash_generator"
+    },
+    "pattern": [
+      "ASA",
+      "UTU",
+      "CGC"
+    ],
+    "key": {
+        "A": {
+            "item": "mekanism:pellet_antimatter"
+        },
+        "S": {
+            "item": "mekanism:seismic_reader"
+        },
+        "U": {
+            "tag": "forge:circuits/ultimate"
+        },
+        "T": {
+            "item": "mekanism:teleportation_core"
+        },
+        "C": {
+            "item": "mekanism:supercharged_coil"
+        },
+        "G": {
+            "item": "overloadgenerators:tick_time_generator"
+        }
+    }
+}

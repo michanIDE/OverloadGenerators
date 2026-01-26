@@ -1,0 +1,31 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "result": {
+      "item": "overloadgenerators:memory_usage_generator"
+    },
+    "pattern": [
+      "ACA",
+      "FRF",
+      "ESE"
+    ],
+    "key": {
+        "A": {
+            "tag": "mekanism:alloys/reinforced"
+        },
+        "C": {
+            "item": "overloadgenerators:core"
+        },
+        "F": {
+            "item": "mekanism:crafting_formula"
+        },
+        "R": {
+            "item": "mekanism:network_reader"
+        },
+        "E": {
+            "tag": "forge:circuits/elite"
+        },
+        "S": {
+            "item": "mekanism:steel_casing"
+        }
+    }
+}

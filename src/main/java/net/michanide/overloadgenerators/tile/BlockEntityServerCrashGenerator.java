@@ -102,10 +102,9 @@ public class BlockEntityServerCrashGenerator extends BlockEntityOverGen {
         return lastProductionAmount;
     }
 
-    // Todo: Implement actual crash count tracking
     @ComputerMethod
     public boolean wasLastShutdownClean() {
-        return true;
+        return !(ServerLifecycleHandler.getCrashDetected());
     }
 
     @ComputerMethod

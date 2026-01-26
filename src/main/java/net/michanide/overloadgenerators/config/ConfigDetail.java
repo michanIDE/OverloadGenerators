@@ -65,7 +65,7 @@ public class ConfigDetail extends BaseMekanismConfig {
 
         // Server Crash Generator
         serverCrashGeneratorStorage = CachedFloatingLongValue.define(this, builder, "Server Crash Generators' energy storage.", "serverCrashGeneratorStorage", FloatingLong.createConst(Long.MAX_VALUE));
-        serverCrashGeneratorGeneration = CachedFloatingLongValue.define(this, builder, "Server Crash Generators' energy generation per crash.", "serverCrashGeneratorGeneration", FloatingLong.createConst(2_500_000_000_000L));
+        serverCrashGeneratorGeneration = CachedFloatingLongValue.define(this, builder, "Server Crash Generators' energy generation per crash.", "serverCrashGeneratorGeneration", FloatingLong.createConst(25_000_000_000_000L));
         
 
         builder.pop();
