@@ -1,4 +1,6 @@
 {
+    "constants.overloadgenerators.mod_name" : "Overload Generators",
+    
     "block.overloadgenerators.cpu_usage_generator": "CPU Usage Generator",
     "block.overloadgenerators.memory_usage_generator": "Memory Usage Generator",
     "block.overloadgenerators.tick_time_generator": "Tick Time Generator",
@@ -11,8 +13,8 @@
     "container.overloadgenerators.server_crash_generator": "Server Crash Generator",
 
     "description.overloadgenerators.cpu_usage_generator": "Generates energy from CPU usage. Because thermal throttling is just free resistance.",
-    "description.overloadgenerators.memory_usage_generator": "Generates energy from Memory usage. Less available memory means more power. (But you should apologize to the garbage collector)",
-    "description.overloadgenerators.tick_time_generator": "More lag, more power. Converts tick duration into energy.",
+    "description.overloadgenerators.memory_usage_generator": "Generates energy from memory usage. Less available memory means more power. (But you should apologize to the garbage collector)",
+    "description.overloadgenerators.tick_time_generator": "Converts tick duration into energy. More lag, more power.",
     "description.overloadgenerators.optical_lattice_clock": "An extremely precise clock capable of detecting even the slightest variations in the flow of time.",
     "description.overloadgenerators.server_crash_generator": "This generator absorbs the massive spacetime distortions and converts it into RF. The more chaotic the server, the more stable the power output.",
 

@@ -1,4 +1,6 @@
 {
+    "constants.overloadgenerators.mod_name" : "Overload Generators",
+    
     "block.overloadgenerators.cpu_usage_generator": "CPU使用率発電機",
     "block.overloadgenerators.memory_usage_generator": "メモリ使用率発電機",
     "block.overloadgenerators.tick_time_generator": "ティック時間発電機",

@@ -1,0 +1,10 @@
+v2.0.0
+- Ported to 1.20.1
+
+- Added new generators
+ - Memory Usage Generator: Generates energy depending on memory usage. You can choose the reference value from runtime's value (default) and system's value.
+ - Server Crash Generator: Generates energy after the server crashed.
+
+- Updated CPU Usage Generator's logic
+ - Handler now uses MXBean instead of OSHI
+ - You can choose the references value from system's value (default) and runtime's value (may cause lag).

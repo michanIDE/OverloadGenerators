@@ -6,6 +6,7 @@ import net.michanide.overloadgenerators.config.OverGenConfig;
 import net.michanide.overloadgenerators.init.OverGenBlockEntity;
 import net.michanide.overloadgenerators.init.OverGenBlocks;
 import net.michanide.overloadgenerators.init.OverGenContainerTypes;
+import net.michanide.overloadgenerators.init.OverGenCreativeTabs;
 import net.michanide.overloadgenerators.init.OverGenItems;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -32,6 +33,7 @@ public class OverloadGenerators
         OverGenItems.ITEMS.register(modEventBus);
         OverGenBlocks.BLOCKS.register(modEventBus);
         OverGenBlockEntity.BLOCK_ENTITIES.register(modEventBus);
+        OverGenCreativeTabs.CREATIVE_TABS.register(modEventBus);
 
         OverGenContainerTypes.CONTAINER_TYPES.register(modEventBus);
     }

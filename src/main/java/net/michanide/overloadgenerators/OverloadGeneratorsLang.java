@@ -20,7 +20,9 @@ public enum OverloadGeneratorsLang implements ILangEntry {
     MEMORY_USAGE_GENERATOR_DESCRIPTION("description", "memory_usage_generator"),
     TICK_TIME_GENERATOR_DESCRIPTION("description", "tick_time_generator"),
     SERVER_CRASH_GENERATOR_DESCRIPTION("description", "server_crash_generator"),
-    OPTICAL_LATTICE_CLOCK_DESCRIPTION("description", "optical_lattice_clock");
+    OPTICAL_LATTICE_CLOCK_DESCRIPTION("description", "optical_lattice_clock"),
+
+    MOD_NAME("constants", "mod_name");
 
     private final String key;
 
