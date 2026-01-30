@@ -64,7 +64,7 @@ public class ConfigDetail extends BaseMekanismConfig {
         memoryUsageGeneratorUseSystemInfo = CachedBooleanValue.wrap(this, builder.comment("If true, this mod uses the value of real system's memory usage. If false, it use the value of JVM process.").define("memoryUsageGeneratorUseSystemInfo", false));
 
         // Server Crash Generator
-        serverCrashGeneratorStorage = CachedFloatingLongValue.define(this, builder, "Server Crash Generators' energy storage.", "serverCrashGeneratorStorage", FloatingLong.createConst(Long.MAX_VALUE));
+        serverCrashGeneratorStorage = CachedFloatingLongValue.define(this, builder, "Server Crash Generators' energy storage.", "serverCrashGeneratorStorage", FloatingLong.MAX_VALUE);
         serverCrashGeneratorGeneration = CachedFloatingLongValue.define(this, builder, "Server Crash Generators' energy generation per crash.", "serverCrashGeneratorGeneration", FloatingLong.createConst(25_000_000_000_000L));
         
 

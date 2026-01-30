@@ -55,7 +55,7 @@ public class GlobalTickHandler {
                     isCPUUsageActive = false; // fetches info only needed
                     if (osBean == null) {
                         cachedCPUUsage = 0;
-                    }else if (CPUGenUsesSystemInfo) {
+                    } else if (CPUGenUsesSystemInfo) {
                         cachedCPUUsage = osBean.getCpuLoad();
                     } else {
                         cachedCPUUsage = osBean.getProcessCpuLoad();
@@ -70,13 +70,15 @@ public class GlobalTickHandler {
                 memoryUsageCounter = 0;
                 if (isMemoryUsageActive) {
                     isMemoryUsageActive = false; // fetches info only needed
-                    if(osBean == null) {
-                        cachedMemoryUsage = 0;
-                    } else if (MemoryGenUsesSystemInfo) {
-                        long freeMemory = osBean.getFreeMemorySize();
-                        long usedMemory = totalMemory - freeMemory;
-                        cachedMemoryUsage = (double) usedMemory / (double) totalMemory;
-                        // System.out.println("Total Memory: " + totalMemory + " Used Memory: " + usedMemory + " Free Memory: " + freeMemory + " Usage: " + cachedMemoryUsage);
+                    if (MemoryGenUsesSystemInfo) {
+                        if(osBean == null) {
+                            cachedMemoryUsage = 0;
+                        } else {
+                            long freeMemory = osBean.getFreeMemorySize();
+                            long usedMemory = totalMemory - freeMemory;
+                            cachedMemoryUsage = (double) usedMemory / (double) totalMemory;
+                            // System.out.println("Total Memory: " + totalMemory + " Used Memory: " + usedMemory + " Free Memory: " + freeMemory + " Usage: " + cachedMemoryUsage);
+                        }
                     } else {
                         long usedMemory = runtime.totalMemory() - runtime.freeMemory();
                         cachedMemoryUsage = (double) usedMemory / (double) runtime.maxMemory();
