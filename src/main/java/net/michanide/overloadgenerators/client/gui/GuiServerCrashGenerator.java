@@ -14,7 +14,6 @@ import mekanism.common.inventory.container.tile.MekanismTileContainer;
 import mekanism.common.util.text.EnergyDisplay;
 import mekanism.generators.common.GeneratorsLang;
 import net.michanide.overloadgenerators.OverloadGeneratorsLang;
-import net.michanide.overloadgenerators.handlers.ServerLifecycleHandler;
 import net.michanide.overloadgenerators.tile.BlockEntityServerCrashGenerator;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -33,7 +32,7 @@ public class GuiServerCrashGenerator extends GuiMekanismTile<BlockEntityServerCr
         addRenderableWidget(new GuiInnerScreen(this, 40, 22, 96, 45, () -> {
             List<Component> list = new ArrayList<>();
             list.add(EnergyDisplay.of(tile.getEnergyContainer()).getTextComponent());
-            list.add(OverloadGeneratorsLang.CRASH_COUNT.translate(tile.getTileCrashCount(), ServerLifecycleHandler.getTotalCrashCount()));
+            list.add(OverloadGeneratorsLang.CRASH_COUNT.translate(tile.getTileCrashCount(), tile.getTotalCrashCount()));
             list.add(GeneratorsLang.OUTPUT_RATE_SHORT.translate(EnergyDisplay.of(tile.getMaxOutput())));
             return list;
         }));

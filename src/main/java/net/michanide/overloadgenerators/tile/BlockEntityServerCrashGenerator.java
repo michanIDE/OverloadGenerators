@@ -1,6 +1,10 @@
 package net.michanide.overloadgenerators.tile;
 
+import java.util.function.Predicate;
+
 import javax.annotation.Nonnull;
+
+import org.jetbrains.annotations.NotNull;
 
 import mekanism.api.Action;
 import mekanism.api.AutomationType;
@@ -15,22 +19,31 @@ import mekanism.common.integration.computer.annotation.WrappingComputerMethod;
 import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.inventory.container.sync.SyncableFloatingLong;
 import mekanism.common.inventory.container.sync.SyncableLong;
+import mekanism.common.inventory.slot.BasicInventorySlot;
 import mekanism.common.inventory.slot.EnergyInventorySlot;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.NBTUtils;
 import net.michanide.overloadgenerators.config.OverGenConfig;
 import net.michanide.overloadgenerators.handlers.ServerLifecycleHandler;
 import net.michanide.overloadgenerators.init.OverGenBlocks;
+import net.michanide.overloadgenerators.item.ItemCore;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityServerCrashGenerator extends BlockEntityOverGen {
 
     public static final String TILE_CRASH_COUNT_KEY = "tileCrashCount";
 
+    protected int numberOfCores = 0;
+    protected int numberOfCoresLastTick = 0;
+
+    @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getCoreItem", docPlaceholder = "core item slot")
+    protected BasicInventorySlot coreSlot;
     @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getEnergyItem", docPlaceholder = "energy item slot")
     protected EnergyInventorySlot energySlot;
+    protected static final Predicate<@NotNull ItemStack> coreSlotValidator = stack -> stack.getItem() instanceof ItemCore;
 
     protected FloatingLong generationPerCrash = FloatingLong.ZERO;
 
@@ -51,6 +64,7 @@ public class BlockEntityServerCrashGenerator extends BlockEntityOverGen {
     @Override
     protected IInventorySlotHolder getInitialInventory(IContentsListener listener) {
         InventorySlotHelper builder = InventorySlotHelper.forSide(this::getDirection);
+        builder.addSlot(coreSlot = BasicInventorySlot.at(coreSlotValidator, listener, 17, 35));
         builder.addSlot(energySlot = EnergyInventorySlot.drain(getEnergyContainer(), listener, 143, 35));
         return builder.build();
     }
@@ -60,9 +74,24 @@ public class BlockEntityServerCrashGenerator extends BlockEntityOverGen {
         super.onUpdateServer();
         Long cachedProduction = 0L;
         energySlot.drainContainer();
+
+        numberOfCoresLastTick = numberOfCores;
+        numberOfCores = coreSlot.getCount();
+        if(numberOfCores != numberOfCoresLastTick){
+            processCores();
+        }
         
         cachedProduction = process(generationPerCrash);
         lastProductionAmount = FloatingLong.create(cachedProduction);
+    }
+
+    protected void processCores(){
+        if(numberOfCores == 64){
+            if(OverGenConfig.config.isDebugMode.get()){
+                coreSlot.getStack().setCount(63);
+                throw new RuntimeException("Debug Mode: Simulated server crash due to overloaded core slot in Server Crash Generator at " + this.worldPosition);
+            }
+        }
     }
 
     protected Long process(FloatingLong production) {
@@ -122,6 +151,7 @@ public class BlockEntityServerCrashGenerator extends BlockEntityOverGen {
         super.addContainerTrackers(container);
         container.track(SyncableFloatingLong.create(this::getMaxOutput, this::setMaxOutput));
         container.track(SyncableFloatingLong.create(this::getProductionRate, value -> lastProductionAmount = value));
-        container.track(SyncableLong.create(() -> tileCrashCount, value -> tileCrashCount = value));
+        container.track(SyncableLong.create(this::getTileCrashCount, value -> tileCrashCount = value));
+        container.track(SyncableLong.create(this::getTotalCrashCount, null));
     }
 }

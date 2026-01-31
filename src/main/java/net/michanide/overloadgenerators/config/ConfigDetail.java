@@ -15,6 +15,7 @@ public class ConfigDetail extends BaseMekanismConfig {
     private final ForgeConfigSpec configSpec;
 
     public final CachedBooleanValue isSafeMode;
+    public final CachedBooleanValue isDebugMode;
     
     public final CachedFloatingLongValue cpuUsageGeneratorStorage;
     public final CachedFloatingLongValue cpuUsageGeneratorGeneration;
@@ -42,6 +43,7 @@ public class ConfigDetail extends BaseMekanismConfig {
         builder.comment("Overload Generators Config. This config is synced from server to client.").push("overloadgenerators");
 
         isSafeMode = CachedBooleanValue.wrap(this, builder.comment("When this value is set to true, the number of processes is limited to 1. Turn this true if you installed too much core on a generator.").define("isSafeMode", false));
+        isDebugMode = CachedBooleanValue.wrap(this, builder.comment("When this value is set to true, You can cause exception by putting a stack of core into server crash generator's core slot.").define("isDebugMode", false));
 
         // CPU Usage Generator
         cpuUsageGeneratorStorage = CachedFloatingLongValue.define(this, builder, "CPU Usage Generators' base energy storage.", "cpuUsageGeneratorStorage", FloatingLong.createConst(8_000_000));
