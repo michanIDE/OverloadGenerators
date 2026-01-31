@@ -26,7 +26,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class BlockEntityOverGen extends TileEntityMekanism {
+public abstract class BlockEntityOverGen extends TileEntityMekanism{
 
     /**
      * Output per tick this generator can transfer.

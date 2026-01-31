@@ -1,7 +1,6 @@
 package net.michanide.overloadgenerators;
 
 import mekanism.common.config.MekanismModConfig;
-
 import net.michanide.overloadgenerators.config.OverGenConfig;
 import net.michanide.overloadgenerators.init.OverGenBlockEntity;
 import net.michanide.overloadgenerators.init.OverGenBlocks;
