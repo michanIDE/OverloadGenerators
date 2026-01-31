@@ -48,6 +48,7 @@ public class BlockEntityServerCrashGenerator extends BlockEntityOverGen {
     protected FloatingLong generationPerCrash = FloatingLong.ZERO;
 
     protected long tileCrashCount = 0L;
+    protected long globalCrashCount = ServerLifecycleHandler.NOT_READY;
 
     public BlockEntityServerCrashGenerator(BlockPos pos, BlockState state) {
         this(OverGenBlocks.SERVER_CRASH_GENERATOR, pos, state, OverGenConfig.config.serverCrashGeneratorGeneration.get().multiply(2));
@@ -58,6 +59,7 @@ public class BlockEntityServerCrashGenerator extends BlockEntityOverGen {
         generationPerCrash = OverGenConfig.config.serverCrashGeneratorGeneration.get();
         baseEnergyStorage = OverGenConfig.config.serverCrashGeneratorStorage.get();
         tileCrashCount = ServerLifecycleHandler.getTotalCrashCount();
+        globalCrashCount = ServerLifecycleHandler.getTotalCrashCount();
     }
 
     @Nonnull
@@ -74,6 +76,10 @@ public class BlockEntityServerCrashGenerator extends BlockEntityOverGen {
         super.onUpdateServer();
         Long cachedProduction = 0L;
         energySlot.drainContainer();
+
+        if(globalCrashCount == ServerLifecycleHandler.NOT_READY){
+            globalCrashCount = ServerLifecycleHandler.getTotalCrashCount();
+        }
 
         numberOfCoresLastTick = numberOfCores;
         numberOfCores = coreSlot.getCount();
@@ -95,8 +101,6 @@ public class BlockEntityServerCrashGenerator extends BlockEntityOverGen {
     }
 
     protected Long process(FloatingLong production) {
-        long globalCrashCount = ServerLifecycleHandler.getTotalCrashCount();
-
         if (globalCrashCount == ServerLifecycleHandler.NOT_READY) {
             setActive(false);
             return 0L;
@@ -104,7 +108,7 @@ public class BlockEntityServerCrashGenerator extends BlockEntityOverGen {
 
         // If a crash was detected since last check, produce energy
         // tileCrashCount : Placed time or last crash check time
-        if (MekanismUtils.canFunction(this) && tileCrashCount < globalCrashCount && ServerLifecycleHandler.getCrashDetected() && !getEnergyContainer().getNeeded().isZero()) {
+        if (MekanismUtils.canFunction(this) && tileCrashCount < globalCrashCount && globalCrashCount != ServerLifecycleHandler.NOT_READY && !getEnergyContainer().getNeeded().isZero()) {
             setActive(true);
             tileCrashCount++;
             return production.subtract(getEnergyContainer().insert(production, Action.EXECUTE, AutomationType.INTERNAL)).getValue();
@@ -138,7 +142,7 @@ public class BlockEntityServerCrashGenerator extends BlockEntityOverGen {
 
     @ComputerMethod
     public long getTotalCrashCount() {
-        return ServerLifecycleHandler.getTotalCrashCount();
+        return globalCrashCount;
     }
 
     @ComputerMethod
@@ -152,6 +156,6 @@ public class BlockEntityServerCrashGenerator extends BlockEntityOverGen {
         container.track(SyncableFloatingLong.create(this::getMaxOutput, this::setMaxOutput));
         container.track(SyncableFloatingLong.create(this::getProductionRate, value -> lastProductionAmount = value));
         container.track(SyncableLong.create(this::getTileCrashCount, value -> tileCrashCount = value));
-        container.track(SyncableLong.create(this::getTotalCrashCount, null));
+        container.track(SyncableLong.create(this::getTotalCrashCount, value -> globalCrashCount = value));
     }
 }
