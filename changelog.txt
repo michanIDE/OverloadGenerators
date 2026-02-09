@@ -8,3 +8,6 @@ v2.0.0
 - Updated CPU Usage Generator's logic
  - Handler now uses MXBean instead of OSHI
  - You can choose the references value from system's value (default) and runtime's value (may cause lag).
+
+v2.1.0
+- Added Computer Integration

@@ -1,5 +1,5 @@
 Mekanism
-Copied Class Structure
+Copied Class Structure and annotation processor
 
 MIT License
 
