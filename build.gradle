@@ -71,7 +71,8 @@ dependencies {
     implementation fg.deobf("mekanism:Mekanism:${minecraft_version}-${mekanism_version}")
     implementation fg.deobf("mekanism:MekanismGenerators:${minecraft_version}-${mekanism_version}")
 
-    annotationProcessor "mekanism:Mekanism:${minecraft_version}-${mekanism_version}"
+    annotationProcessor project(':annotation-processor')
+    annotationProcessor fg.deobf("mekanism:Mekanism:${minecraft_version}-${mekanism_version}")
 }
 
 tasks.named('processResources', ProcessResources).configure {

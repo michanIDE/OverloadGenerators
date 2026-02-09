@@ -1,0 +1,3 @@
+net.michanide.overloadgenerators.ComputerMethodProcessor
+net.michanide.overloadgenerators.MethodFactoryProcessor
+net.michanide.overloadgenerators.ParamNameMapper
